@@ -1,8 +1,8 @@
-# `<name of application here>`
+# `<AirBNB>`
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+![Database Schema](airbnb-db-schema.PNG)
 
 ## API Documentation
 
