@@ -44,7 +44,18 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static associate(models) {
-      // define association here
+      User.hasMany(
+        models.Spot,
+        { foreignKey: 'ownerId', onDelete: 'CASCADE', hooks: true }
+      )
+      User.hasMany(
+        models.Booking,
+        { foreignKey: 'userId', onDelete: 'CASCADE', hooks: true }
+      )
+      User.hasMany(
+        models.Review,
+        { foreignKey: 'userId', onDelete: 'CASCADE', hooks: true }
+      )
     }
   };
 
@@ -60,6 +71,22 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Cannot be an email.");
             }
           }
+        }
+      },
+      firstName: {
+        type: DataTypes.string,
+        allowNull: false,
+        validate: {
+          isAlpha: true,
+          len: [1, 30]
+        }
+      },
+      lastName: {
+        type: DataTypes.string,
+        allowNull: false,
+        validate: {
+          isAlpha: true,
+          len: [1, 30]
         }
       },
       email: {
