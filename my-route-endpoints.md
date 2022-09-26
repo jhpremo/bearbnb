@@ -1,10 +1,8 @@
-# AirBnB Clone
+# `<AirBNB>`
 
 ## Database Schema Design
 
-![airbnb-dbdiagram]
-
-[airbnb-dbdiagram]: ./airbnb_dbdiagram.png
+![Database Schema](my-airbnb-db-schema.PNG)
 
 ## API Documentation
 
@@ -280,7 +278,7 @@ Returns all the spots owned (created) by the current user.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/spots/current
+  * URL: /api/users/current/spots
   * Body: none
 
 * Successful Response
@@ -320,7 +318,7 @@ Returns the details of a spot specified by its id.
 * Require Authentication: false
 * Request
   * Method: GET
-  * URL: /api/spots/:spotId
+  * URL: /api/spots/:spotid
   * Body: none
 
 * Successful Response
@@ -461,7 +459,7 @@ Create and return a new image for a spot specified by id.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: POST
-  * URL: /api/spots/:spotId/images
+  * URL: /api/spots/:spotid/images
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -508,7 +506,7 @@ Updates and returns an existing spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: PUT
-  * URL: /api/spots/:spotId
+  * URL: /api/spots/:id
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -634,7 +632,7 @@ Returns all the reviews written by the current user.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/reviews/current
+  * URL: /api/users/current/reviews
   * Body: none
 
 * Successful Response
@@ -992,7 +990,7 @@ Return all the bookings that the current user has made.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/bookings/current
+  * URL: /api/users/current/bookings
   * Body: none
 
 * Successful Response
@@ -1338,7 +1336,7 @@ Delete an existing image for a Spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: DELETE
-  * URL: /api/spot-images/:imageId
+  * URL: /api/spots/:spotId/images/:imageId
   * Body: none
 
 * Successful Response
@@ -1375,7 +1373,7 @@ Delete an existing image for a Review.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: DELETE
-  * URL: /api/review-images/:imageId
+  * URL: /api/reviews/:reviewId/images/:imageId
   * Body: none
 
 * Successful Response
@@ -1411,10 +1409,10 @@ Return spots filtered by query parameters.
 * Require Authentication: false
 * Request
   * Method: GET
-  * URL: /api/spots
+  * URL: /spots
   * Query Parameters
-    * page: integer, minimum: 1, maximum: 10, default: 1
-    * size: integer, minimum: 1, maximum: 20, default: 20
+    * page: integer, minimum: 0, maximum: 10, default: 0
+    * size: integer, minimum: 0, maximum: 20, default: 20
     * minLat: decimal, optional
     * maxLat: decimal, optional
     * minLng: decimal, optional
@@ -1465,8 +1463,8 @@ Return spots filtered by query parameters.
       "message": "Validation Error",
       "statusCode": 400,
       "errors": {
-        "page": "Page must be greater than or equal to 1",
-        "size": "Size must be greater than or equal to 1",
+        "page": "Page must be greater than or equal to 0",
+        "size": "Size must be greater than or equal to 0",
         "maxLat": "Maximum latitude is invalid",
         "minLat": "Minimum latitude is invalid",
         "minLng": "Maximum longitude is invalid",
