@@ -4,10 +4,7 @@ const { Spot, Review, SpotImage, sequelize } = require('../../db/models')
 
 const router = express.Router();
 
-
-router.get('/', async (req, res) => {
-
-    let reviews = await Review.findAll({ raw: true, attributes: ['spotId', 'stars'] })
+let getSpotsStarsAndPreview = (spots, reviews, previewImages) => {
     let totalStars = {}
 
     for (let i = 0; i < reviews.length; i++) {
@@ -21,13 +18,7 @@ router.get('/', async (req, res) => {
         }
     }
 
-    let previewImages = await SpotImage.findAll({
-        raw: true,
-        attributes: ['spotId', 'url'],
-        where: {
-            preview: true
-        }
-    })
+
     let firstPreviews = {}
     for (let i = 0; i < previewImages.length; i++) {
         if (!firstPreviews[previewImages[i].spotId]) {
@@ -35,16 +26,34 @@ router.get('/', async (req, res) => {
         }
     }
 
-    let spots = await Spot.findAll({ raw: true })
     for (let i = 0; i < spots.length; i++) {
         let spotId = spots[i].id
         spots[i].avgStarRating = totalStars[spotId] / totalStars[`${spotId} count`]
         spots[i].previewImage = firstPreviews[spotId]
     }
 
-    let payload = { Spots: spots }
+    return spots
+}
+
+
+
+router.get('/', async (req, res) => {
+
+    let reviews = await Review.findAll({ raw: true, attributes: ['spotId', 'stars'] })
+
+    let previewImages = await SpotImage.findAll({
+        raw: true,
+        attributes: ['spotId', 'url'],
+        where: {
+            preview: true
+        }
+    })
+
+    let spots = await Spot.findAll({ raw: true })
+
+
+    let payload = { Spots: getSpotsStarsAndPreview(spots, reviews, previewImages) }
     res.json(payload)
 })
-
 
 module.exports = router;
