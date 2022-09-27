@@ -63,6 +63,17 @@ app.use((err, _req, _res, next) => {
     next(err);
 });
 
+app.use((err, req, res, next) => {
+    if (err.title === 'Unauthorized') {
+        res.status(401)
+        return res.json({ message: 'Authentication required', statusCode: 401 })
+    } else if (err.title === 'Forbidden') {
+        res.status(403)
+        return res.json({ message: 'Forbidden', statusCode: 403 })
+    }
+    next(err)
+})
+
 app.use((err, _req, res, _next) => {
     res.status(err.status || 500);
     console.error(err);

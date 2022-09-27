@@ -181,6 +181,29 @@ router.post('/', restoreUser, requireAuth, async (req, res) => {
     return res.json(payload)
 })
 
+router.post('/:spotId/images', restoreUser, requireAuth, async (req, res, next) => {
+    let spot = await Spot.findByPk(req.params.spotId)
+
+    if (!spot) {
+        res.status(404)
+        return res.json({ message: "Spot couldn't be found", statusCode: 404 })
+    }
+    console.log(spot.id, req.user.id)
+    if (spot.id !== req.user.id) {
+        const err = new Error('Forbidden');
+        err.title = 'Forbidden';
+        next(err);
+    }
+
+    let { url, preview } = req.body
+    let image = await spot.createSpotImage({
+        url,
+        preview
+    })
+
+    res.json(await SpotImage.findByPk(image.id))
+})
+
 
 
 module.exports = router;
