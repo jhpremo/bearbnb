@@ -189,10 +189,10 @@ router.post('/:spotId/images', restoreUser, requireAuth, async (req, res, next) 
         return res.json({ message: "Spot couldn't be found", statusCode: 404 })
     }
     console.log(spot.id, req.user.id)
-    if (spot.id !== req.user.id) {
+    if (spot.ownerId !== req.user.id) {
         const err = new Error('Forbidden');
         err.title = 'Forbidden';
-        next(err);
+        return next(err);
     }
 
     let { url, preview } = req.body
@@ -204,6 +204,56 @@ router.post('/:spotId/images', restoreUser, requireAuth, async (req, res, next) 
     res.json(await SpotImage.findByPk(image.id))
 })
 
+router.put('/:spotId', restoreUser, requireAuth, async (req, res, next) => {
+    let spot = await Spot.findByPk(req.params.spotId)
 
+    if (!spot) {
+        res.status(404)
+        return res.json({ message: "Spot couldn't be found", statusCode: 404 })
+    }
+    console.log(spot.id, req.user.id)
+    if (spot.ownerId !== req.user.id) {
+        const err = new Error('Forbidden');
+        err.title = 'Forbidden';
+        return next(err);
+    }
+
+
+    let { address, city, state, country, lat, lng, name, description, price } = req.body
+    let errors = {}
+
+    if (!address) errors.address = "Street address is required"
+    if (!city) errors.city = "City is required"
+    if (!state) errors.state = "State is required"
+    if (!country) errors.country = "Country is required"
+    if (!lat || lat < -90 || lat > 90) errors.lat = "Latitude is not valid"
+    if (!lng || lng < -180 || lng > 180) errors.lng = "Longitude is not valid"
+    if (!name || name.length > 50) errors.name = "Name must be less than 50 characters"
+    if (!description) errors.description = "Description is required"
+    if (!price) errors.price = "Price per day is required"
+
+    if (Object.keys(errors).length) {
+        res.status(400)
+        return res.json({
+            message: "Validation Error",
+            statusCode: 400,
+            errors
+        })
+    }
+
+    await spot.update({
+        address,
+        city,
+        state,
+        country,
+        lat,
+        lng,
+        name,
+        description,
+        price
+    })
+
+    return res.json(spot)
+})
 
 module.exports = router;
