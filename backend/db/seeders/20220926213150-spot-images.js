@@ -9,9 +9,29 @@ module.exports = {
         preview: true
       },
       {
+        spotId: 1,
+        url: "www.image2@hostsite.com",
+        preview: true
+      },
+      {
+        spotId: 1,
+        url: "www.image3@hostsite.com",
+        preview: true
+      },
+      {
         spotId: 2,
         url: "www.picture@hostsite.com",
         preview: false
+      },
+      {
+        spotId: 2,
+        url: "www.picture2@hostsite.com",
+        preview: false
+      },
+      {
+        spotId: 2,
+        url: "www.picture3@hostsite.com",
+        preview: true
       },
       {
         spotId: 3,
@@ -22,6 +42,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
+    const Op = Sequelize.Op;
     return queryInterface.bulkDelete('SpotImages', {
       id: { [Op.in]: [1, 2, 3] }
     }, {});
