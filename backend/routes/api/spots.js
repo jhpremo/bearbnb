@@ -188,7 +188,7 @@ router.post('/:spotId/images', restoreUser, requireAuth, async (req, res, next) 
         res.status(404)
         return res.json({ message: "Spot couldn't be found", statusCode: 404 })
     }
-    console.log(spot.id, req.user.id)
+
     if (spot.ownerId !== req.user.id) {
         const err = new Error('Forbidden');
         err.title = 'Forbidden';
@@ -211,7 +211,7 @@ router.put('/:spotId', restoreUser, requireAuth, async (req, res, next) => {
         res.status(404)
         return res.json({ message: "Spot couldn't be found", statusCode: 404 })
     }
-    console.log(spot.id, req.user.id)
+
     if (spot.ownerId !== req.user.id) {
         const err = new Error('Forbidden');
         err.title = 'Forbidden';
@@ -256,4 +256,22 @@ router.put('/:spotId', restoreUser, requireAuth, async (req, res, next) => {
     return res.json(spot)
 })
 
+router.delete('/:spotId', restoreUser, requireAuth, async (req, res, next) => {
+    let spot = await Spot.findByPk(req.params.spotId)
+
+    if (!spot) {
+        res.status(404)
+        return res.json({ message: "Spot couldn't be found", statusCode: 404 })
+    }
+
+    if (spot.ownerId !== req.user.id) {
+        const err = new Error('Forbidden');
+        err.title = 'Forbidden';
+        return next(err);
+    }
+
+    await spot.destroy()
+
+    res.json({ message: 'Successfully deleted' })
+})
 module.exports = router;
