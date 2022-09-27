@@ -28,8 +28,8 @@ let getSpotsStarsAndPreview = (spots, reviews, previewImages) => {
 
     for (let i = 0; i < spots.length; i++) {
         let spotId = spots[i].id
-        spots[i].avgStarRating = totalStars[spotId] / totalStars[`${spotId} count`]
-        spots[i].previewImage = firstPreviews[spotId]
+        if (totalStars[spotId]) spots[i].avgStarRating = totalStars[spotId] / totalStars[`${spotId} count`]
+        if (firstPreviews[spotId]) spots[i].previewImage = firstPreviews[spotId]
     }
 
     return spots
