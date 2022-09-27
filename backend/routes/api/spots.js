@@ -1,6 +1,6 @@
 const express = require('express')
 const { restoreUser, requireAuth } = require('../../utils/auth')
-const { Spot, Review, SpotImage, sequelize } = require('../../db/models')
+const { Spot, Review, SpotImage, User } = require('../../db/models')
 
 const router = express.Router();
 
@@ -56,7 +56,7 @@ router.get('/', async (req, res) => {
 
 
     let payload = { Spots: getSpotsStarsAndPreview(spots, reviews, previewImages) }
-    res.json(payload)
+    return res.json(payload)
 })
 
 router.get('/current', restoreUser, requireAuth, async (req, res) => {
@@ -99,10 +99,38 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
 
 
     let payload = { Spots: getSpotsStarsAndPreview(spots, reviews, previewImages) }
-    res.json(payload)
+    return res.json(payload)
 })
 
+router.get('/:spotId', async (req, res) => {
+    let spotId = req.params.spotId
 
+    let reviews = await Review.findAll({
+        raw: true,
+        attributes: ['spotId', 'stars'],
+        where: {
+            spotId
+        }
+    })
+
+
+    let spot = await Spot.findByPk(spotId, {
+        raw: true,
+    })
+
+    let payload = getSpotsStarsAndPreview([spot], reviews, [])[0]
+
+    payload.SpotImages = await SpotImage.findAll({
+        where: { spotId },
+        attributes: ['id', 'url', 'preview']
+    })
+    payload.Owner = await User.findByPk(spot.ownerId, {
+        attributes: ['id', 'firstName', 'lastName']
+    })
+
+    return res.json(payload)
+
+})
 
 
 module.exports = router;
