@@ -201,7 +201,7 @@ router.post('/:spotId/images', restoreUser, requireAuth, async (req, res, next) 
         preview
     })
 
-    res.json(await SpotImage.findByPk(image.id))
+    return res.json(await SpotImage.findByPk(image.id))
 })
 
 router.put('/:spotId', restoreUser, requireAuth, async (req, res, next) => {
@@ -272,7 +272,7 @@ router.delete('/:spotId', restoreUser, requireAuth, async (req, res, next) => {
 
     await spot.destroy()
 
-    res.json({ message: 'Successfully deleted' })
+    return res.json({ message: 'Successfully deleted', statusCode: 200 })
 })
 
 router.get('/:spotId/reviews', async (req, res) => {
