@@ -55,7 +55,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
     return res.json({ Bookings: bookings })
 })
 
-router.put('/:bookingId', async (req, res, next) => {
+router.put('/:bookingId', restoreUser, requireAuth, async (req, res, next) => {
     let booking = await Booking.findByPk(req.params.bookingId)
 
     if (!booking) {
@@ -146,6 +146,39 @@ router.put('/:bookingId', async (req, res, next) => {
     res.json(booking)
 })
 
+router.delete('/:bookingId', restoreUser, requireAuth, async (req, res, next) => {
+    let booking = await Booking.findByPk(req.params.bookingId, {
+        include: {
+            model: Spot
+        }
+    })
 
+    if (!booking) {
+        res.status(404)
+        return res.json({ message: "Booking couldn't be found", statusCode: 404 })
+    }
+
+    let checkBooking = booking = await Booking.findByPk(req.params.bookingId, {
+        raw: true,
+        nest: true
+    })
+    let now = new Date()
+    if (new Date(checkBooking.startDate) <= now) {
+        res.status(403),
+            returnres.json({ message: "Bookings that have been started can't be deleted", statusCode: 403 })
+    }
+
+    if (booking.userId !== req.user.id && booking.Spot.ownerId !== req.user.id) {
+        const err = new Error('Forbidden');
+        err.title = 'Forbidden';
+        return next(err);
+    }
+
+    booking = await Booking.findByPk(req.params.bookingId, {
+    })
+    await booking.destroy()
+
+    return res.json({ message: 'Successfully deleted', statusCode: 200 })
+})
 
 module.exports = router;
