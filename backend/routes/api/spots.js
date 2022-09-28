@@ -1,6 +1,7 @@
 const express = require('express')
 const { restoreUser, requireAuth } = require('../../utils/auth')
-const { Spot, Review, SpotImage, User, ReviewImage } = require('../../db/models')
+const { Spot, Review, SpotImage, User, ReviewImage, Booking } = require('../../db/models');
+const e = require('express');
 
 const router = express.Router();
 
@@ -359,4 +360,48 @@ router.post('/:spotId/reviews', restoreUser, requireAuth, async (req, res) => {
 
     return res.json(newReview)
 })
+
+router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
+    const spotId = req.params.spotId
+
+    let spot = await Spot.findByPk(spotId)
+
+    if (!spot) {
+        res.status(404)
+        return res.json({ message: "Spot couldn't be found", statusCode: 404 })
+    }
+
+    let bookings
+
+    if (spot.ownerId === req.user.id) {
+        bookings = await Booking.findAll({
+            where: {
+                spotId
+            },
+            include: {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            raw: true,
+            nest: true
+        })
+    } else {
+        bookings = await Booking.findAll({
+            where: {
+                spotId
+            },
+            attributes: ['spotId', 'startDate', 'endDate'],
+            raw: true,
+            nest: true
+        })
+    }
+
+    console.log(bookings)
+    res.json({ Bookings: bookings })
+})
+
+
+
+
+
 module.exports = router;

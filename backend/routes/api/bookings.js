@@ -52,7 +52,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
     }
 
 
-    res.json({ Bookings: bookings })
+    return res.json({ Bookings: bookings })
 })
 
 
