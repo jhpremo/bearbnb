@@ -292,15 +292,24 @@ router.get('/:spotId/reviews', async (req, res) => {
             {
                 model: User,
                 attributes: ['id', 'firstName', 'lastName']
-            },
-            {
-                model: ReviewImage,
-                attributes: ['id', 'url']
             }
         ],
         raw: true,
         nest: true
     })
+
+    for (let i = 0; i < reviews.length; i++) {
+        let ReviewImages = await ReviewImage.findAll({
+            where: {
+                reviewId: reviews[i].id
+            }
+        })
+
+        if (ReviewImages.length) {
+            reviews[i].ReviewImages = ReviewImages
+        }
+    }
+
     return res.json({ Reviews: reviews })
 })
 
@@ -346,6 +355,7 @@ router.post('/:spotId/reviews', restoreUser, requireAuth, async (req, res) => {
         review,
         stars,
     })
+
 
     return res.json(newReview)
 })

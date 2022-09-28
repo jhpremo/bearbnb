@@ -20,10 +20,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
                 model: Spot,
                 attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']
             },
-            {
-                model: ReviewImage,
-                attributes: ['id', 'url']
-            }
+
         ],
         raw: true,
         nest: true
@@ -51,9 +48,20 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
         }
     }
 
+
     for (let i = 0; i < reviews.length; i++) {
         if (firstPreviews[reviews[i].Spot.id]) {
             reviews[i].Spot.previewImage = firstPreviews[reviews[i].Spot.id]
+        }
+
+        let ReviewImages = await ReviewImage.findAll({
+            where: {
+                reviewId: reviews[i].id
+            }
+        })
+
+        if (ReviewImages.length) {
+            reviews[i].ReviewImages = ReviewImages
         }
     }
 
