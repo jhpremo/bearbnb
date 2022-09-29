@@ -98,7 +98,6 @@ router.get('/', async (req, res) => {
 
     offset = (pageParsed - 1) * limit
 
-    console.log("-----", limit, offset)
     if (maxLat && minLat) where.lat = { [Op.lte]: maxLatParsed, [Op.gte]: minLatParsed }
     else if (maxLat) where.lat = { [Op.lte]: maxLatParsed }
     else if (minLat) where.lat = { [Op.gte]: minLatParsed }
@@ -459,7 +458,6 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
         })
     }
 
-    console.log(bookings)
     res.json({ Bookings: bookings })
 })
 

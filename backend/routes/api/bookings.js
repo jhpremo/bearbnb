@@ -20,7 +20,6 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
         raw: true,
         nest: true
     })
-    console.log(bookings[0].Spot.id)
     let bookedSpots = []
 
     for (let i = 0; i < bookings.length; i++) {
