@@ -29,7 +29,7 @@ let getSpotsStarsAndPreview = (spots, reviews, previewImages) => {
 
     for (let i = 0; i < spots.length; i++) {
         let spotId = spots[i].id
-        if (totalStars[spotId]) spots[i].avgStarRating = totalStars[spotId] / totalStars[`${spotId} count`]
+        if (totalStars[spotId]) spots[i].avgStarRating = Number.parseFloat(totalStars[spotId] / totalStars[`${spotId} count`]).toFixed(1)
         if (firstPreviews[spotId]) spots[i].previewImage = firstPreviews[spotId]
     }
 
