@@ -57,7 +57,8 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
         let ReviewImages = await ReviewImage.findAll({
             where: {
                 reviewId: reviews[i].id
-            }
+            },
+            attributes: ['id', 'url']
         })
 
         if (ReviewImages.length) {

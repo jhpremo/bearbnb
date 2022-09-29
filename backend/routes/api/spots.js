@@ -264,7 +264,9 @@ router.post('/:spotId/images', restoreUser, requireAuth, async (req, res, next) 
         preview
     })
 
-    return res.json(await SpotImage.findByPk(image.id))
+    return res.json(await SpotImage.findByPk(image.id, {
+        attributes: ['id', 'url', 'preview']
+    }))
 })
 
 router.put('/:spotId', restoreUser, requireAuth, async (req, res, next) => {
@@ -365,7 +367,8 @@ router.get('/:spotId/reviews', async (req, res) => {
         let ReviewImages = await ReviewImage.findAll({
             where: {
                 reviewId: reviews[i].id
-            }
+            },
+            attributes: ['id', 'url']
         })
 
         if (ReviewImages.length) {
