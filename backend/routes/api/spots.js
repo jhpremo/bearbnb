@@ -2,6 +2,7 @@ const express = require('express')
 const { restoreUser, requireAuth } = require('../../utils/auth')
 const { Spot, Review, SpotImage, User, ReviewImage, Booking } = require('../../db/models');
 const e = require('express');
+const { Op } = require('sequelize');
 
 const router = express.Router();
 
@@ -53,7 +54,69 @@ router.get('/', async (req, res) => {
         }
     })
 
-    let spots = await Spot.findAll({ raw: true })
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+    pageParsed = parseInt(page)
+    sizeParsed = parseInt(size)
+    minLatParsed = parseFloat(minLat)
+    maxLatParsed = parseFloat(maxLat)
+    minLngParsed = parseFloat(minLng)
+    maxLngParsed = parseFloat(maxLng)
+    minPriceParsed = parseFloat(minPrice)
+    maxPriceParsed = parseFloat(maxPrice)
+
+    let errors = {}
+
+    if (page && (Number.isNaN(pageParsed) || pageParsed < 1)) errors.page = "Page must be greater than or equal to 1"
+    if (size && (Number.isNaN(sizeParsed) || sizeParsed < 1)) errors.size = "Size must be greater than or equal to 1"
+    if (maxLat && (Number.isNaN(maxLatParsed) || maxLatParsed < -90 || maxLatParsed > 90)) errors.maxLat = "Maximum latitude is invalid"
+    if (minLat && (Number.isNaN(minLatParsed) || minLatParsed < -90 || minLatParsed > 90)) errors.minLat = "Minimum latitude is invalid"
+    if (maxLng && (Number.isNaN(maxLngParsed) || maxLngParsed < -180 || maxLngParsed > 180)) errors.maxLng = "Maximum longitude is invalid"
+    if (minLng && (Number.isNaN(minLngParsed) || minLngParsed < -180 || minLngParsed > 180)) errors.minLng = "Minimum longitude is invalid"
+    if (maxPrice && (Number.isNaN(maxPriceParsed) || maxPriceParsed < 0)) errors.maxPrice = "Maximum price must be greater than or equal to 0"
+    if (minPrice && (Number.isNaN(minPriceParsed) || minPriceParsed < 0)) errors.minPrice = "Minimum price must be greater than or equal to 0"
+
+    if (Object.keys(errors).length) {
+        res.status(400)
+        return res.json({
+            message: "Validation Error",
+            statusCode: 400,
+            errors
+        })
+    }
+
+    let where = {}
+    let offset
+    let limit
+
+    if (size && sizeParsed < 20) {
+        limit = sizeParsed
+    } else limit = 20
+
+    if (page) {
+        if (pageParsed > 10) pageParsed = 10
+    } else pageParsed = 1
+
+    offset = (pageParsed - 1) * limit
+
+    console.log("-----", limit, offset)
+    if (maxLat && minLat) where.lat = { [Op.lte]: maxLatParsed, [Op.gte]: minLatParsed }
+    else if (maxLat) where.lat = { [Op.lte]: maxLatParsed }
+    else if (minLat) where.lat = { [Op.gte]: minLatParsed }
+
+    if (maxLng && minLng) where.lng = { [Op.lte]: maxLngParsed, [Op.gte]: minLngParsed }
+    else if (maxLng) where.lng = { [Op.lte]: maxLngParsed }
+    else if (minLng) where.lng = { [Op.gte]: minLngParsed }
+
+    if (maxPrice && minPrice) where.price = { [Op.lte]: maxPriceParsed, [Op.gte]: minPriceParsed }
+    else if (maxPrice) where.price = { [Op.lte]: maxPriceParsed }
+    else if (minPrice) where.price = { [Op.gte]: minPriceParsed }
+
+    let spots = await Spot.findAll({
+        raw: true,
+        where,
+        offset,
+        limit
+    })
 
 
     let payload = { Spots: getSpotsStarsAndPreview(spots, reviews, previewImages) }
