@@ -93,9 +93,7 @@ router.put('/:bookingId', restoreUser, requireAuth, async (req, res, next) => {
 
         let bookings = await Booking.findAll({
             where: {
-                spotId: {
-                    [Op.is]: booking.spotId,
-                },
+                spotId: booking.spotId,
                 id: {
                     [Op.not]: req.params.bookingId
                 }
