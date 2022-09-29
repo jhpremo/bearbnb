@@ -31,6 +31,7 @@ let getSpotsStarsAndPreview = (spots, reviews, previewImages) => {
     for (let i = 0; i < spots.length; i++) {
         let spotId = spots[i].id
         if (totalStars[spotId]) spots[i].avgStarRating = Number.parseFloat(totalStars[spotId] / totalStars[`${spotId} count`]).toFixed(1)
+        else spots[i].avgStarRating = Number.parseFloat(0)
         if (firstPreviews[spotId]) spots[i].previewImage = firstPreviews[spotId]
     }
 
@@ -118,7 +119,11 @@ router.get('/', async (req, res) => {
     })
 
 
-    let payload = { Spots: getSpotsStarsAndPreview(spots, reviews, previewImages) }
+    let payload = {
+        Spots: getSpotsStarsAndPreview(spots, reviews, previewImages),
+        page: pageParsed,
+        size: limit
+    }
     return res.json(payload)
 })
 
