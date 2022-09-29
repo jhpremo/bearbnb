@@ -103,47 +103,42 @@ router.post('/:reviewId/images', restoreUser, requireAuth, async (req, res, next
 })
 
 router.put('/:reviewId', restoreUser, requireAuth, async (req, res, next) => {
-    try {
-        let editReview = await Review.findByPk(req.params.reviewId)
+    let editReview = await Review.findByPk(req.params.reviewId)
 
-        if (!editReview) {
-            res.status(404)
-            return res.json({ message: "Review couldn't be found", statusCode: 404 })
-        }
+    if (!editReview) {
+        res.status(404)
+        return res.json({ message: "Review couldn't be found", statusCode: 404 })
+    }
 
-        if (editReview.userId !== req.user.id) {
-            const err = new Error('Forbidden');
-            err.title = 'Forbidden';
-            return next(err);
-        }
+    if (editReview.userId !== req.user.id) {
+        const err = new Error('Forbidden');
+        err.title = 'Forbidden';
+        return next(err);
+    }
 
 
-        const { review, stars } = req.body
-        let errors = {}
+    const { review, stars } = req.body
+    let errors = {}
 
-        if (!review) errors.review = "Review text is required"
-        if (!stars || parseInt(stars) < 1 || parseInt(stars) > 5 || !Number.isInteger(stars)) errors.stars = "Stars must be an integer from 1 to 5"
+    if (!review) errors.review = "Review text is required"
+    if (!stars || parseInt(stars) < 1 || parseInt(stars) > 5 || !Number.isInteger(stars)) errors.stars = "Stars must be an integer from 1 to 5"
 
-        if (Object.keys(errors).length) {
-            res.status(400)
-            return res.json({
-                message: "Validation Error",
-                statusCode: 400,
-                errors
-            })
-        }
-
-        let newReview = await editReview.update({
-            userId: req.user.id,
-            review,
-            stars,
+    if (Object.keys(errors).length) {
+        res.status(400)
+        return res.json({
+            message: "Validation Error",
+            statusCode: 400,
+            errors
         })
+    }
 
-        return res.json(newReview)
-    }
-    catch (e) {
-        return res.json(e)
-    }
+    let newReview = await editReview.update({
+        userId: req.user.id,
+        review,
+        stars,
+    })
+
+    return res.json(newReview)
 })
 
 router.delete('/:reviewId', restoreUser, requireAuth, async (req, res, next) => {
