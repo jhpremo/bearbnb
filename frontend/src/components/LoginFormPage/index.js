@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import './LoginForm.css';
 
 
-function LoginFormPage({ setShowLogin }) {
+function LoginFormPage() {
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user);
     const [credential, setCredential] = useState('');
@@ -30,8 +30,6 @@ function LoginFormPage({ setShowLogin }) {
         <div className='form-wrapper'>
             <form onSubmit={handleSubmit} className='form'>
                 <div className='top-bar'>
-                    {/* replace with icon */}
-                    <button type='button' onClick={() => { setShowLogin(false) }}>X</button>
                     <h4 id='form-header-1'>Log in</h4>
                 </div>
                 <h3 id='form-header-2'>Welcome to BearBNB</h3>

@@ -35,6 +35,37 @@ export const loginUserThunk = (userObj) => async (dispatch) => {
     return res
 }
 
+export const restoreUserThunk = () => async dispatch => {
+    const response = await csrfFetch('/api/session');
+    const data = await response.json();
+    dispatch(setUserActionCreator(data.user));
+    return response;
+};
+
+export const signupThunk = (user) => async (dispatch) => {
+    const { username, email, password, firstName, lastName } = user;
+    const response = await csrfFetch("/api/users", {
+        method: "POST",
+        body: JSON.stringify({
+            username,
+            email,
+            password,
+            firstName,
+            lastName
+        }),
+    });
+    const data = await response.json();
+    dispatch(setUserActionCreator(data.user));
+    return response;
+};
+
+export const logoutThunk = () => async (dispatch) => {
+    const response = await csrfFetch('/api/session', {
+        method: 'DELETE',
+    });
+    dispatch(removeUserActionCreator());
+    return response;
+};
 
 const sessionReducer = (state = { user: null }, action) => {
     switch (action.type) {
