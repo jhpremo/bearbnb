@@ -1,6 +1,14 @@
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import LoginFormPage from './components/LoginFormPage';
+import HomePage from './components/HomePage/index'
 function App() {
   return (
-    <h1>Hello from App</h1>
+    <Switch>
+      <Route path="/" exact>
+        <HomePage />
+      </Route>
+    </Switch>
   );
 }
 
