@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
+import SignupFormModal from '../SignupFormModal';
+import LoginFormModal from '../LoginFormModal';
+import './Navigation.css';
 
 function ProfileButton({ user }) {
     const dispatch = useDispatch();
@@ -27,22 +30,40 @@ function ProfileButton({ user }) {
         e.preventDefault();
         dispatch(sessionActions.logoutThunk());
     };
+    let dropDown
+    if (user) {
+        dropDown = (
+            <>
+                <div>{user.username}</div>
+                <div>{user.email}</div>
+                <button onClick={logout}>Log Out</button>
+            </>
+        )
+    } else {
+        dropDown = (
+            <>
+                <LoginFormModal />
+                <SignupFormModal />
+            </>
+        )
+    }
+
+    let dropDownClass
+    if (showMenu) {
+        dropDownClass = "profile-dropdown"
+    } else dropDownClass = 'hidden'
 
     return (
-        <>
-            <button onClick={openMenu}>
+        <div className="profile-button-wrapper">
+            <button id="profile-button" onClick={openMenu}>
+                <i className="fa-solid fa-bars" />
+                <span> </span>
                 <i className="fas fa-user-circle" />
             </button>
-            {showMenu && (
-                <ul className="profile-dropdown">
-                    <li>{user.username}</li>
-                    <li>{user.email}</li>
-                    <li>
-                        <button onClick={logout}>Log Out</button>
-                    </li>
-                </ul>
-            )}
-        </>
+            <div className={dropDownClass}>
+                {dropDown}
+            </div>
+        </div>
     );
 }
 
