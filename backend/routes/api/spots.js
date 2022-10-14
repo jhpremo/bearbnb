@@ -42,18 +42,6 @@ let getSpotsStarsAndPreview = (spots, reviews, previewImages) => {
 
 router.get('/', async (req, res) => {
 
-    let reviews = await Review.findAll({
-        raw: true,
-        attributes: ['spotId', 'stars']
-    })
-
-    let previewImages = await SpotImage.findAll({
-        raw: true,
-        attributes: ['spotId', 'url'],
-        where: {
-            preview: true
-        }
-    })
 
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
     pageParsed = parseInt(page)
@@ -110,6 +98,19 @@ router.get('/', async (req, res) => {
     if (maxPrice && minPrice) where.price = { [Op.lte]: maxPriceParsed, [Op.gte]: minPriceParsed }
     else if (maxPrice) where.price = { [Op.lte]: maxPriceParsed }
     else if (minPrice) where.price = { [Op.gte]: minPriceParsed }
+
+    let reviews = await Review.findAll({
+        raw: true,
+        attributes: ['spotId', 'stars']
+    })
+
+    let previewImages = await SpotImage.findAll({
+        raw: true,
+        attributes: ['spotId', 'url'],
+        where: {
+            preview: true
+        }
+    })
 
     let spots = await Spot.findAll({
         raw: true,
