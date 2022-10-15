@@ -4,6 +4,9 @@ import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import './index.css'
+import SpotsPage from "./components/SpotsPage";
+
+
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -16,7 +19,9 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route></Route>
+          <Route path='/' exact>
+            <SpotsPage />
+          </Route>
         </Switch>
       )}
     </>
