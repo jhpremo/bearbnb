@@ -1,0 +1,37 @@
+.spot-image {
+    width: 100%;
+    height: 250px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 5%;
+    height: 80%;
+}
+
+.spot-card-wrapper {
+    display: flex;
+    justify-content: left;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    flex-wrap: wrap;
+}
+
+.spot-card {
+    max-width: 300px;
+    min-width: 200px;
+    width: 23%;
+    padding-left: 1%;
+    padding-right: 1%;
+    aspect-ratio: 4/5;
+}
+
+.location-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.star {
+    font-size: 10pt;
+}
