@@ -12,7 +12,7 @@ module.exports = {
         lat: 40.9,
         lng: -74.6,
         name: "Tiny Black A-frame",
-        description: "Set in the midst of the pristine Catskills forest, less than two hours from NYC, the Tiny Black A-Frame is a custom built, semi off-grid mini cabin with a refined wooden design and amazing views of natural splendor and wooded foothills through the fully glass front wall. Roast marshmallows over the camp fire while soaking up the natural sounds of birds and rustling leaves, or snuggle up with a loved one. This space is meant for making memories to carry for a lifetime.",
+        description: "Set in the midst of the pristine Catskills forest, less than two hours from NYC, the Tiny Black A-Frame is a custom built, semi off-grid mini cabin with a refined wooden design and amazing views of natural splendor.",
         price: 295
       },
       {
@@ -24,7 +24,7 @@ module.exports = {
         lat: 40.7,
         lng: -76.3,
         name: "The Boathouse on Moon Lake",
-        description: "Quaint cottage overlooking Beurys Lake...or as my dad lovingly says...'its more like a shallow pond'.  For those who love a sweet quiet cottage get away with a gorgeous view, this is the perfect place for you.  Kayaks and a small boat are here for your use...on my shallow, but pretty lake. Cottage has recently been renovated with love. 2 Queen bedrooms on main level…one with private full bath.",
+        description: "Quaint cottage overlooking Beurys Lake...or as my dad lovingly says...'its more like a shallow pond'.  For those who love a sweet quiet cottage get away with a gorgeous view, this is the perfect place for you. ",
         price: 219
       },
       {
@@ -36,7 +36,7 @@ module.exports = {
         lat: 46.9,
         lng: -71.3,
         name: "MICA (Chalets Micro-Element) CITQ 303134",
-        description: 'The "MICA", high-end micro-housing located in the heart of the "Maelström" recreational-forestry area. Live the immersive experience of a boreal nature just 25 minutes from Old Quebec. Enjoy panoramic views of Laurentian Park as well as breathtaking sunsets at the highest peak of Lac-Beauport. ',
+        description: 'The "MICA", high-end micro-housing located in the heart of the "Maelström" recreational-forestry area. Live the immersive experience of a boreal nature just 25 minutes from Old Quebec. ',
         price: 350
       }
     ])
