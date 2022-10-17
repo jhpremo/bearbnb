@@ -12,12 +12,14 @@
     width: 10%;
     display: flex;
     flex-direction: column;
+
 }
 
 .profile-dropdown {
     display: flex;
     flex-direction: column;
 }
+
 
 #profile-button {
     width: 75px;
@@ -28,5 +30,6 @@
     border-radius: 50px;
     font-size: 20px;
     background: none;
-    border: 1px lightgray solid
+    border: 1px lightgray solid;
+    cursor: pointer;
 }

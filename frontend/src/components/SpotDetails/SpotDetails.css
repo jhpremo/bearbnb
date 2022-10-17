@@ -1,0 +1,40 @@
+.reviews-location-wrapper {
+    display: flex;
+    gap: 4px;
+}
+
+.spot-images-wrapper {
+    width: 100%;
+    aspect-ratio: 3/1;
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    gap: 1%;
+}
+
+.preview-image {
+    width: 49.5%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.top-four-image-wrapper {
+    display: flex;
+    width: 49.5%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2%;
+}
+
+.top-four-image {
+    width: 49%;
+    height: 49%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+
+}

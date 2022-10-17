@@ -11,7 +11,7 @@ function SpotsPage() {
     }, [dispatch])
 
     const spotsArr = useSelector((state) => Object.values(state.spots.allSpots))
-    console.log(spotsArr)
+    if (!spotsArr) return <></>
     return (
         <div className='spot-card-wrapper'>
             {spotsArr.map((spot) => {
