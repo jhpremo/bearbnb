@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import SignupFormModal from '../SignupFormModal';
 import LoginFormModal from '../LoginFormModal';
+import CreateSpotFormModal from "../CreateSpotModel";
 import './Navigation.css';
 
 function ProfileButton({ user }) {
@@ -36,6 +37,7 @@ function ProfileButton({ user }) {
             <>
                 <div>{user.username}</div>
                 <div>{user.email}</div>
+                <CreateSpotFormModal />
                 <button onClick={logout}>Log Out</button>
             </>
         )

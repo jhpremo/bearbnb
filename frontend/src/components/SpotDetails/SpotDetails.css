@@ -10,6 +10,8 @@
     border-radius: 10px;
     overflow: hidden;
     gap: 1%;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .preview-image {
@@ -37,4 +39,35 @@
     background-repeat: no-repeat;
     box-sizing: border-box;
 
+}
+
+.description-price-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.description-wrapper {
+    width: 70%;
+}
+
+.price-card {
+    width: 20%;
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.price-card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.price-card-reviews {
+    display: flex;
+}
+
+.price-calculations>div {
+    display: flex;
+    justify-content: space-between;
 }

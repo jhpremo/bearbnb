@@ -20,6 +20,60 @@ module.exports = {
         userId: 1,
         review: "Too cold and small",
         stars: 3,
+      },
+      {
+        spotId: 4,
+        userId: 2,
+        review: "This was an awesome spot!",
+        stars: 5,
+      },
+      {
+        spotId: 5,
+        userId: 3,
+        review: "Great views",
+        stars: 5,
+      },
+      {
+        spotId: 6,
+        userId: 1,
+        review: "Too cold and small",
+        stars: 3,
+      },
+      {
+        spotId: 7,
+        userId: 2,
+        review: "This was an awesome spot!",
+        stars: 5,
+      },
+      {
+        spotId: 8,
+        userId: 3,
+        review: "Great views",
+        stars: 5,
+      },
+      {
+        spotId: 9,
+        userId: 1,
+        review: "It was alright",
+        stars: 3,
+      },
+      {
+        spotId: 10,
+        userId: 2,
+        review: "This was an awesome spot!",
+        stars: 5,
+      },
+      {
+        spotId: 11,
+        userId: 3,
+        review: "Great views",
+        stars: 5,
+      },
+      {
+        spotId: 12,
+        userId: 1,
+        review: "It was alright",
+        stars: 3,
       }
     ])
   },

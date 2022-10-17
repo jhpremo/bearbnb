@@ -49,9 +49,39 @@ function SpotDetails() {
                 </div>
             </div>
             <div className="description-price-wrapper">
-                <h3>Hosted by {spotObj.Owner.firstName}</h3>
-                <div className="description">
-                    {spotObj.description}
+                <div className="description-wrapper">
+                    <h3>{spotObj.name} hosted by {spotObj.Owner.firstName}</h3>
+                    <div className="description">
+                        {spotObj.description}
+                    </div>
+                </div>
+                <div className="price-card">
+                    <div className="price-card-header">
+                        <div>${spotObj.price} night</div>
+                        <div className="price-card-reviews">
+                            <h2><i className="fa-solid fa-star star" /> {spotObj.avgStarRating}</h2>
+                            <h2> · </h2>
+                            <h2>{spotObj.numReviews} reviews</h2>
+                        </div>
+                    </div>
+                    <div className="price-calculations">
+                        <div>
+                            <p>${spotObj.price} X 7 nights</p>
+                            <p>${spotObj.price * 7}</p>
+                        </div>
+                        <div>
+                            <p>Cleaning fee</p>
+                            <p>${spotObj.price * .5}</p>
+                        </div>
+                        <div>
+                            <p>Service fee</p>
+                            <p>${spotObj.price * .6}</p>
+                        </div>
+                        <div>
+                            <p>Total before Taxes</p>
+                            <p>${spotObj.price * .5 + spotObj.price * .6 + spotObj.price * 7}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
