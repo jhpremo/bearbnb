@@ -29,7 +29,6 @@ function CreateSpotForm({ setShowModal }) {
         const validateUrl = (urls) => {
             let check = true
             urls.forEach(url => {
-                if (!url.includes('@')) check = false
                 if (!url.includes('.')) check = false
             });
             return check
