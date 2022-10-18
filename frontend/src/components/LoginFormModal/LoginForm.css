@@ -6,12 +6,14 @@
     padding-bottom: 10px;
     padding-top: 10px;
     overflow: hidden;
+    width: 90%
 }
 
 .form-wrapper {
-    max-width: 400px;
     width: auto;
     margin: auto;
+    display: flex;
+    justify-content: center;
 }
 
 .input-wrapper {
@@ -52,4 +54,11 @@
     padding: none;
     font-weight: 600;
     width: 90%;
+}
+
+.left-right-side-wrapper {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
 }
