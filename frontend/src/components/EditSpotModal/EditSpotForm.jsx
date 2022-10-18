@@ -1,38 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { writeSpotThunk } from "../../store/spotsReducer";
-function CreateSpotForm({ setShowModal }) {
+import { editSpotThunk } from "../../store/spotsReducer";
+
+function EditSpotForm({ setShowModal }) {
     const dispatch = useDispatch();
-    const history = useHistory()
-    const [state, setState] = useState("");
-    const [country, setCountry] = useState("");
-    const [lat, setLat] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [lng, setLng] = useState("");
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [price, setPrice] = useState("");
-    const [previewImageUrl, setPreviewImageUrl] = useState('')
-    const [urls, setUrls] = useState('')
+
+    const singleSpot = useSelector(state => state.spots.singleSpot)
+
+    const [state, setState] = useState(singleSpot ? singleSpot.state : '');
+    const [country, setCountry] = useState(singleSpot ? singleSpot.country : '');
+    const [lat, setLat] = useState(singleSpot ? singleSpot.lat : '');
+    const [address, setAddress] = useState(singleSpot ? singleSpot.address : '');
+    const [city, setCity] = useState(singleSpot ? singleSpot.city : '');
+    const [lng, setLng] = useState(singleSpot ? singleSpot.lng : '');
+    const [name, setName] = useState(singleSpot ? singleSpot.name : '');
+    const [description, setDescription] = useState(singleSpot ? singleSpot.description : '');
+    const [price, setPrice] = useState(singleSpot ? singleSpot.price : '');
     const [errors, setErrors] = useState([]);
     const [submitted, setSubmitted] = useState(false)
+
+
+
     useEffect(() => {
         let errorsArr = []
-
         let parsedLat = parseFloat(lat)
         let parsedLng = parseFloat(lng)
         let parsedPrice = parseFloat(price)
-        let urlArr = urls.split(/\r?\n/)
-
-        const validateUrl = (urls) => {
-            let check = true
-            urls.forEach(url => {
-                if (!url.includes('.')) check = false
-            });
-            return check
-        }
 
         if (!(state && country && address && lat && lng && city && name && description && price)) errorsArr.push("All fields must be filled out")
         if (lat && (!parsedLat || lat < -90 || lat > 90)) errorsArr.push("Latitude must be a number between -90 and 90")
@@ -40,11 +33,9 @@ function CreateSpotForm({ setShowModal }) {
         if (name && name.length > 50) errorsArr.push("Spot name must be less than 50 characters")
         if (description && description.length > 255) errorsArr.push("Spot description must be less than 255 characters")
         if (price && !parsedPrice) errorsArr.push('Price must be a number')
-        if (!validateUrl([previewImageUrl])) errorsArr.push('Preview image must have a valid url')
-        if (!validateUrl(urlArr)) errorsArr.push('Each additional imags must have a valid url seperated by a new line')
 
         setErrors(errorsArr)
-    }, [state, country, lat, address, lng, city, name, description, price, previewImageUrl, urls])
+    }, [state, country, lat, address, lng, city, name, description, price])
 
 
     const handleSubmit = async (e) => {
@@ -64,10 +55,9 @@ function CreateSpotForm({ setShowModal }) {
             description,
             price
         }
-        let urlArr = urls.split(/\r?\n/)
 
-        let spotId = await dispatch(writeSpotThunk(payload, previewImageUrl, urlArr))
-        history.push(`/spots/${spotId}`)
+        await dispatch(editSpotThunk(singleSpot.id, payload))
+        window.location.reload()
         setShowModal(false)
     };
 
@@ -75,9 +65,9 @@ function CreateSpotForm({ setShowModal }) {
         <div className='form-wrapper'>
             <form onSubmit={handleSubmit} className='form'>
                 <div className='top-bar'>
-                    <h4 id='form-header-1'>Host a Spot</h4>
+                    <h4 id='form-header-1'>Edit Your Spot</h4>
                 </div>
-                <h3 id='form-header-2'>Tell us about your spot</h3>
+                <h3 id='form-header-2'>What's new about your spot</h3>
                 {errors.length > 0 && submitted && <ul className="form-errors">
                     {errors.map((error, idx) => <li key={idx}>{error}</li>)}
                 </ul>}
@@ -193,30 +183,10 @@ function CreateSpotForm({ setShowModal }) {
                                 className='form-input'
                             />
                         </div>
-                        <div className='input-wrapper'>
-                            <label className='input-label'>
-                                Preview image url
-                            </label>
-                            <input
-                                type="text"
-                                value={previewImageUrl}
-                                onChange={(e) => setPreviewImageUrl(e.target.value)}
-                                required
-                                className='form-input'
-                            />
-                        </div>
-                        <div className='input-wrapper'>
-                            <label className='input-label'>Addition image urls (one per line)</label>
-                            <textarea
-                                className='form-input'
-                                onChange={e => setUrls(e.target.value)}
-                                value={urls}
-                            />
-                        </div>
                     </div>
                 </div>
                 <div className='input-wrapper'>
-                    <button type="submit" className='submit-button'>Post Spot</button>
+                    <button type="submit" className='submit-button'>Post Spot Changes</button>
                 </div>
             </form>
         </div >
@@ -224,4 +194,4 @@ function CreateSpotForm({ setShowModal }) {
 }
 
 
-export default CreateSpotForm
+export default EditSpotForm

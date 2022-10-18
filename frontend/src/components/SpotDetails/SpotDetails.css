@@ -71,3 +71,8 @@
     display: flex;
     justify-content: space-between;
 }
+
+.spot-title-bar {
+    display: flex;
+    justify-content: space-between;
+}

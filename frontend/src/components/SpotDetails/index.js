@@ -2,7 +2,9 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOneSpotThunk } from "../../store/spotsReducer";
 import { useEffect, useState } from "react";
+import EditSpotFormModal from "../EditSpotModal";
 import "./SpotDetails.css"
+import DeleteSpotFormModal from "../DeleteSpotModal";
 
 function SpotDetails() {
     const dispatch = useDispatch()
@@ -12,6 +14,7 @@ function SpotDetails() {
     }, [dispatch, spotId])
 
     const spotObj = useSelector((state) => state.spots.singleSpot)
+    const user = useSelector((state) => state.session.user)
     if (spotObj && !spotObj.name) {
         return <></>
     }
@@ -31,7 +34,14 @@ function SpotDetails() {
 
     return (
         <div className="spot-details-wrapper">
-            <h1>{spotObj.name}</h1>
+            <div className="spot-title-bar">
+                <h1>{spotObj.name}</h1>
+                {spotObj.ownerId === user.id &&
+                    <div>
+                        <EditSpotFormModal />
+                        <DeleteSpotFormModal />
+                    </div>}
+            </div>
             <div className="reviews-location-wrapper">
                 <h2><i className="fa-solid fa-star star" /> {spotObj.avgStarRating}</h2>
                 <h2> · </h2>
