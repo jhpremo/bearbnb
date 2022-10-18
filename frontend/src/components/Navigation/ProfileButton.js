@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import SignupFormModal from '../SignupFormModal';
 import LoginFormModal from '../LoginFormModal';
-import CreateSpotFormModal from "../CreateSpotModel";
+import CreateSpotFormModal from "../CreateSpotModal";
 import './Navigation.css';
 
 function ProfileButton({ user }) {

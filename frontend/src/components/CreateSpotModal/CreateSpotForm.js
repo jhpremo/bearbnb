@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-
-function CreateSpotForm() {
+import { useHistory } from "react-router-dom";
+import { writeSpotThunk } from "../../store/spotsReducer";
+function CreateSpotForm({ setShowModal }) {
     const dispatch = useDispatch();
+    const history = useHistory()
     const [state, setState] = useState("");
     const [country, setCountry] = useState("");
     const [lat, setLat] = useState("");
@@ -17,8 +18,25 @@ function CreateSpotForm() {
     const [urls, setUrls] = useState('')
     const [errors, setErrors] = useState([]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let payload = {
+            state,
+            country,
+            lat,
+            address,
+            lng,
+            city,
+            name,
+            description,
+            price
+        }
+        let urlArr = urls.split(/\r?\n/)
+
+        let spotId = await dispatch(writeSpotThunk(payload, previewImageUrl, urlArr))
+        history.push(`/spots/${spotId}`)
+        setShowModal(false)
     };
 
     return (

@@ -1,20 +1,20 @@
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOneSpotThunk } from "../../store/spotsReducer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./SpotDetails.css"
 
 function SpotDetails() {
     const dispatch = useDispatch()
     const { spotId } = useParams()
-
     useEffect(() => {
         dispatch(fetchOneSpotThunk(spotId))
     }, [dispatch, spotId])
 
     const spotObj = useSelector((state) => state.spots.singleSpot)
-
-    if (!spotObj.name) return <></>
+    if (spotObj && !spotObj.name) {
+        return <></>
+    }
 
     let usedImagesUrls = []
     let previewImageUrl
