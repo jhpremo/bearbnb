@@ -19,7 +19,6 @@ function CreateReviewForm({ setShowModal }) {
         }
 
         dispatch(postSpotReviewThunk(reviewObj, spot.id))
-        window.location.reload()
         setShowModal(false)
     };
 

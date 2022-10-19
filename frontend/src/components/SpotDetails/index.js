@@ -39,8 +39,9 @@ function SpotDetails() {
     }
 
     let hasReview = false
+
     for (let i = 0; i < reviewsArr.length; i++) {
-        if (reviewsArr[i].User.id === user.id) {
+        if ((reviewsArr[i].User && reviewsArr[i].User.id === user.id) || reviewsArr[i].User === undefined) {
             hasReview = true
             break
         }
@@ -114,7 +115,7 @@ function SpotDetails() {
                     <h2><i className="fa-solid fa-star star" /> {spotObj.avgStarRating}</h2>
                     <h2> · </h2>
                     <h2>{spotObj.numReviews} reviews</h2>
-                    {!hasReview && <CreateReviewFormModal />}
+                    {!hasReview && spotObj.ownerId !== user.id && <CreateReviewFormModal />}
                 </div>
                 <div className='reviews-area-wrapper'>
                     {reviewsArr.map((review) => {
