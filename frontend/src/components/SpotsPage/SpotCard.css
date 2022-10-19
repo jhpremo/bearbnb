@@ -11,7 +11,7 @@
 .spot-card-wrapper {
     display: flex;
     justify-content: left;
-    width: 95%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     flex-wrap: wrap;

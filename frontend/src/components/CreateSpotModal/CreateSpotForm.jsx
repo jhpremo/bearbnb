@@ -7,10 +7,8 @@ function CreateSpotForm({ setShowModal }) {
     const history = useHistory()
     const [state, setState] = useState("");
     const [country, setCountry] = useState("");
-    const [lat, setLat] = useState("");
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
-    const [lng, setLng] = useState("");
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
@@ -20,9 +18,6 @@ function CreateSpotForm({ setShowModal }) {
     const [submitted, setSubmitted] = useState(false)
     useEffect(() => {
         let errorsArr = []
-
-        let parsedLat = parseFloat(lat)
-        let parsedLng = parseFloat(lng)
         let parsedPrice = parseFloat(price)
         let urlArr = urls.split(/\r?\n/)
 
@@ -34,17 +29,15 @@ function CreateSpotForm({ setShowModal }) {
             return check
         }
 
-        if (!(state && country && address && lat && lng && city && name && description && price)) errorsArr.push("All fields must be filled out")
-        if (lat && (!parsedLat || lat < -90 || lat > 90)) errorsArr.push("Latitude must be a number between -90 and 90")
-        if (lng && (!parsedLng || lng < -180 || lng > 180)) errorsArr.push("Longitude must be a number between -180 and 180")
+        if (!(state && country && address && city && name && description && price)) errorsArr.push("All fields must be filled out")
         if (name && name.length > 50) errorsArr.push("Spot name must be less than 50 characters")
         if (description && description.length > 255) errorsArr.push("Spot description must be less than 255 characters")
         if (price && !parsedPrice) errorsArr.push('Price must be a number')
         if (!validateUrl([previewImageUrl])) errorsArr.push('Preview image must have a valid url')
-        if (!validateUrl(urlArr)) errorsArr.push('Each additional imags must have a valid url seperated by a new line')
+        if (urls && !validateUrl(urlArr)) errorsArr.push('Each additional imags must have a valid url seperated by a new line')
 
         setErrors(errorsArr)
-    }, [state, country, lat, address, lng, city, name, description, price, previewImageUrl, urls])
+    }, [state, country, address, city, name, description, price, previewImageUrl, urls])
 
 
     const handleSubmit = async (e) => {
@@ -56,9 +49,9 @@ function CreateSpotForm({ setShowModal }) {
         let payload = {
             state,
             country,
-            lat,
+            lat: "0",
             address,
-            lng,
+            lng: "0",
             city,
             name,
             description,
@@ -131,30 +124,6 @@ function CreateSpotForm({ setShowModal }) {
                                 className='form-input'
                             />
                         </div>
-                        <div className='input-wrapper'>
-                            <label className='input-label'>
-                                Latitude
-                            </label>
-                            <input
-                                type="text"
-                                value={lat}
-                                onChange={(e) => setLat(e.target.value)}
-                                required
-                                className='form-input'
-                            />
-                        </div>
-                        <div className='input-wrapper'>
-                            <label className='input-label'>
-                                Longitude
-                            </label>
-                            <input
-                                type="text"
-                                value={lng}
-                                onChange={(e) => setLng(e.target.value)}
-                                required
-                                className='form-input'
-                            />
-                        </div>
                     </div>
                     <div className="right-side">
                         <div className='input-wrapper'>
@@ -205,15 +174,15 @@ function CreateSpotForm({ setShowModal }) {
                                 className='form-input'
                             />
                         </div>
-                        <div className='input-wrapper'>
-                            <label className='input-label'>Addition image urls (one per line)</label>
-                            <textarea
-                                className='form-input'
-                                onChange={e => setUrls(e.target.value)}
-                                value={urls}
-                            />
-                        </div>
                     </div>
+                </div>
+                <div className='input-wrapper'>
+                    <label className='input-label'>Addition image urls (one per line)</label>
+                    <textarea
+                        className='form-input'
+                        onChange={e => setUrls(e.target.value)}
+                        value={urls}
+                    />
                 </div>
                 <div className='input-wrapper'>
                     <button type="submit" className='submit-button'>Post Spot</button>
