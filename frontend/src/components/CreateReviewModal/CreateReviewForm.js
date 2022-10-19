@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postSpotReviewThunk } from "../../store/reviewsReducer";
-
+import { addSpotReviewActionCreator } from "../../store/spotsReducer";
 function CreateReviewForm({ setShowModal }) {
     const dispatch = useDispatch();
     const spot = useSelector((state) => state.spots.singleSpot);
@@ -19,6 +19,7 @@ function CreateReviewForm({ setShowModal }) {
         }
 
         dispatch(postSpotReviewThunk(reviewObj, spot.id))
+        dispatch(addSpotReviewActionCreator(parseInt(stars)))
         setShowModal(false)
     };
 

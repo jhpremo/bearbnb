@@ -57,7 +57,6 @@ function EditSpotForm({ setShowModal }) {
         }
 
         await dispatch(editSpotThunk(singleSpot.id, payload))
-        window.location.reload()
         setShowModal(false)
     };
 

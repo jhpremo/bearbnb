@@ -29,13 +29,15 @@ function SpotDetails() {
     let usedImagesUrls = []
     let previewImageUrl
 
-    for (let i = 0; i < spotObj.SpotImages.length; i++) {
-        let image = spotObj.SpotImages[i]
-        if (image.preview) previewImageUrl = image.url
-        else {
-            usedImagesUrls.push(image.url)
+    if (spotObj.SpotImages) {
+        for (let i = 0; i < spotObj.SpotImages.length; i++) {
+            let image = spotObj.SpotImages[i]
+            if (image.preview) previewImageUrl = image.url
+            else {
+                usedImagesUrls.push(image.url)
+            }
+            if (usedImagesUrls.length >= 4 && previewImageUrl) break
         }
-        if (usedImagesUrls.length >= 4 && previewImageUrl) break
     }
 
     let hasReview = false

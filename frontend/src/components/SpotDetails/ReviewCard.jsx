@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deleteReviewThunk } from "../../store/reviewsReducer";
+import { subtractSpotReviewActionCreator } from "../../store/spotsReducer";
 function ReviewCard({ review }) {
     let postDate = new Date(review.createdAt)
     let year = postDate.getFullYear()
@@ -7,6 +8,7 @@ function ReviewCard({ review }) {
     const dispatch = useDispatch()
     const deleteClick = () => {
         dispatch(deleteReviewThunk(review.id))
+        dispatch(subtractSpotReviewActionCreator(review.stars))
         console.log('delete')
     }
     const user = useSelector((state) => state.session.user)

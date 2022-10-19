@@ -1,10 +1,14 @@
+import EditSpotForm from "../components/EditSpotModal/EditSpotForm"
 import { csrfFetch } from "./csrf"
 
 const LOAD_SPOTS = '/spots/load/all'
 const LOAD_ONE_SPOT = '/spots/load/one'
 const POST_SPOT = '/spots/post'
 const DELETE_SPOT = '/spots/delete'
+const EDIT_SPOT = 'spots/edit'
 
+const ADD_REVIEW = 'spots/reviews/add'
+const SUBTRACT_REVIEW = 'spots/reviews/subtract'
 export const loadSpotsActionCreator = (spotsArr) => {
     return {
         type: LOAD_SPOTS,
@@ -81,6 +85,13 @@ export const writeSpotThunk = (spotPayload, previewImageUrl, imageUrlsArr) => as
     }
 }
 
+export const editSpotActionCreator = (spotObj) => {
+    return {
+        type: EDIT_SPOT,
+        spotObj
+    }
+}
+
 export const editSpotThunk = (spotId, spotPayload) => async (dispatch) => {
     const res = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'PUT',
@@ -89,7 +100,7 @@ export const editSpotThunk = (spotId, spotPayload) => async (dispatch) => {
 
     if (res.ok) {
         let data = await res.json()
-        dispatch(postSpotActionCreator(data))
+        dispatch(editSpotActionCreator(data))
         return data
     }
     return res
@@ -114,11 +125,26 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
     return res
 }
 
+export const addSpotReviewActionCreator = (stars) => {
+    return {
+        type: ADD_REVIEW,
+        stars
+    }
+}
+
+export const subtractSpotReviewActionCreator = (stars) => {
+    return {
+        type: SUBTRACT_REVIEW,
+        stars
+    }
+}
+
 const initialState = {
     allSpots: {},
     singleSpot: {}
 }
 const spotsReducer = (state = initialState, action) => {
+    let total, newTotal, newNumReviews, newAvgStarRating
     switch (action.type) {
         case LOAD_SPOTS:
             let newSpots = {}
@@ -134,6 +160,23 @@ const spotsReducer = (state = initialState, action) => {
             let newState = { ...state, allSpots: { ...state.allSpots } }
             delete newState[action.spotId]
             return newState
+        case EDIT_SPOT:
+            let newSingleSpot = { ...state.singleSpot, ...action.spotObj }
+            newSingleSpot.Owner = { ...state.singleSpot.Owner }
+            newSingleSpot.SpotImages = [...state.singleSpot.SpotImages]
+            return { allSpots: { ...state.allSpots, [action.spotObj.id]: action.spotObj }, singleSpot: newSingleSpot }
+        case ADD_REVIEW:
+            total = state.singleSpot.avgStarRating * state.singleSpot.numReviews
+            newTotal = total + action.stars
+            newNumReviews = state.singleSpot.numReviews + 1
+            newAvgStarRating = newTotal / newNumReviews
+            return { ...state, singleSpot: { ...state.singleSpot, Owner: { ...state.singleSpot.Owner }, SpotImages: [...state.singleSpot.SpotImages], numReviews: newNumReviews, avgStarRating: newAvgStarRating } }
+        case SUBTRACT_REVIEW:
+            total = state.singleSpot.avgStarRating * state.singleSpot.numReviews
+            newTotal = total - action.stars
+            newNumReviews = state.singleSpot.numReviews - 1
+            newAvgStarRating = newTotal / newNumReviews
+            return { ...state, singleSpot: { ...state.singleSpot, Owner: { ...state.singleSpot.Owner }, SpotImages: [...state.singleSpot.SpotImages], numReviews: newNumReviews, avgStarRating: newAvgStarRating } }
         default:
             return state;
     }
