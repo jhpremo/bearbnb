@@ -5,16 +5,23 @@ import { useEffect, useState } from "react";
 import EditSpotFormModal from "../EditSpotModal";
 import "./SpotDetails.css"
 import DeleteSpotFormModal from "../DeleteSpotModal";
+import { fetchSpotReviewsThunk } from "../../store/reviewsReducer";
+import ReviewCard from "./ReviewCard";
+import CreateReviewFormModal from "../CreateReviewModal";
 
 function SpotDetails() {
     const dispatch = useDispatch()
     const { spotId } = useParams()
     useEffect(() => {
         dispatch(fetchOneSpotThunk(spotId))
+        dispatch(fetchSpotReviewsThunk(spotId))
     }, [dispatch, spotId])
 
     const spotObj = useSelector((state) => state.spots.singleSpot)
     const user = useSelector((state) => state.session.user)
+    const reviewsArr = useSelector((state) => Object.values(state.reviews.spot))
+
+
     if (spotObj && !spotObj.name) {
         return <></>
     }
@@ -29,6 +36,14 @@ function SpotDetails() {
             usedImagesUrls.push(image.url)
         }
         if (usedImagesUrls.length >= 4 && previewImageUrl) break
+    }
+
+    let hasReview = false
+    for (let i = 0; i < reviewsArr.length; i++) {
+        if (reviewsArr[i].User.id === user.id) {
+            hasReview = true
+            break
+        }
     }
 
 
@@ -92,6 +107,19 @@ function SpotDetails() {
                             <p>${spotObj.price * .5 + spotObj.price * .6 + spotObj.price * 7}</p>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className="reviews-preview-wrapper">
+                <div className="reviews-preview-header">
+                    <h2><i className="fa-solid fa-star star" /> {spotObj.avgStarRating}</h2>
+                    <h2> · </h2>
+                    <h2>{spotObj.numReviews} reviews</h2>
+                    {!hasReview && <CreateReviewFormModal />}
+                </div>
+                <div className='reviews-area-wrapper'>
+                    {reviewsArr.map((review) => {
+                        return <ReviewCard review={review} key={review.id} />
+                    })}
                 </div>
             </div>
         </div>

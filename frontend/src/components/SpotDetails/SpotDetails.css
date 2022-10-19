@@ -76,3 +76,8 @@
     display: flex;
     justify-content: space-between;
 }
+
+
+.reviews-preview-header {
+    display: flex;
+}
