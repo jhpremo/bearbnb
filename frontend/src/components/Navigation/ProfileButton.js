@@ -34,6 +34,13 @@ function ProfileButton({ user }) {
         dispatch(sessionActions.logoutThunk());
         history.push('/')
     };
+
+
+    const demoLogin = () => {
+        dispatch(sessionActions.loginUserThunk({ credential: 'FakeUser1', password: 'password2' }))
+    }
+
+
     let dropDown
     if (user) {
         dropDown = (
@@ -47,6 +54,7 @@ function ProfileButton({ user }) {
         dropDown = (
             <>
                 <LoginFormModal />
+                <button onClick={demoLogin}>Demo log-in</button>
                 <SignupFormModal />
             </>
         )
