@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOneSpotThunk } from "../../store/spotsReducer";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import EditSpotFormModal from "../EditSpotModal";
 import "./SpotDetails.css"
 import DeleteSpotFormModal from "../DeleteSpotModal";
@@ -43,7 +43,7 @@ function SpotDetails() {
     let hasReview = false
 
     for (let i = 0; i < reviewsArr.length; i++) {
-        if ((reviewsArr[i].User && reviewsArr[i].User.id === user.id) || reviewsArr[i].User === undefined) {
+        if ((reviewsArr[i].User && reviewsArr[i].User.id === user?.id) || reviewsArr[i].User === undefined) {
             hasReview = true
             break
         }
@@ -54,7 +54,7 @@ function SpotDetails() {
         <div className="spot-details-wrapper">
             <div className="spot-title-bar">
                 <h1>{spotObj.name}</h1>
-                {spotObj.ownerId === user.id &&
+                {spotObj.ownerId === user?.id &&
                     <div>
                         <EditSpotFormModal />
                         <DeleteSpotFormModal />
@@ -85,7 +85,7 @@ function SpotDetails() {
                 </div>
                 <div className="price-card">
                     <div className="price-card-header">
-                        <div>${spotObj.price} night</div>
+                        <div><span>${spotObj.price} </span>night</div>
                         <div className="price-card-reviews">
                             <h2><i className="fa-solid fa-star star" /> {spotObj.avgStarRating}</h2>
                             <h2> · </h2>
@@ -95,29 +95,29 @@ function SpotDetails() {
                     <div className="price-calculations">
                         <div>
                             <p>${spotObj.price} X 7 nights</p>
-                            <p>${spotObj.price * 7}</p>
+                            <p>${(spotObj.price * 7).toFixed(2)}</p>
                         </div>
                         <div>
                             <p>Cleaning fee</p>
-                            <p>${spotObj.price * .5}</p>
+                            <p>${(spotObj.price * .5).toFixed(2)}</p>
                         </div>
                         <div>
                             <p>Service fee</p>
-                            <p>${spotObj.price * .6}</p>
+                            <p>${(spotObj.price * .6).toFixed(2)}</p>
                         </div>
-                        <div>
+                        <div className="price-card-total">
                             <p>Total before Taxes</p>
-                            <p>${spotObj.price * .5 + spotObj.price * .6 + spotObj.price * 7}</p>
+                            <p>${(spotObj.price * .5 + spotObj.price * .6 + spotObj.price * 7).toFixed(2)}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="reviews-preview-wrapper">
                 <div className="reviews-preview-header">
-                    <h2><i className="fa-solid fa-star star" /> {spotObj.avgStarRating}</h2>
+                    <h2><i className="fa-solid fa-star star header-star" /> {spotObj.avgStarRating}</h2>
                     <h2> · </h2>
                     <h2>{spotObj.numReviews} reviews</h2>
-                    {!hasReview && spotObj.ownerId !== user.id && <CreateReviewFormModal />}
+                    {!hasReview && user?.id && spotObj.ownerId !== user?.id && <CreateReviewFormModal />}
                 </div>
                 <div className='reviews-area-wrapper'>
                     {reviewsArr.map((review) => {

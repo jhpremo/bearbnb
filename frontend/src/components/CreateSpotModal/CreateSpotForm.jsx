@@ -64,10 +64,13 @@ function CreateSpotForm({ setShowModal }) {
         setShowModal(false)
     };
 
+    const closeModal = () => setShowModal(false)
+
     return (
-        <div className='form-wrapper'>
+        <div className='form-wrapper create-spot-form-wrapper'>
             <form onSubmit={handleSubmit} className='form'>
                 <div className='top-bar'>
+                    <i class="fa-solid fa-x form-x" onClick={closeModal} />
                     <h4 id='form-header-1'>Host a Spot</h4>
                 </div>
                 <h3 id='form-header-2'>Tell us about your spot</h3>
@@ -176,16 +179,18 @@ function CreateSpotForm({ setShowModal }) {
                         </div>
                     </div>
                 </div>
-                <div className='input-wrapper'>
-                    <label className='input-label'>Addition image urls (one per line)</label>
-                    <textarea
-                        className='form-input'
-                        onChange={e => setUrls(e.target.value)}
-                        value={urls}
-                    />
-                </div>
-                <div className='input-wrapper'>
-                    <button type="submit" className='submit-button'>Post Spot</button>
+                <div className="bottom-side">
+                    <div className='input-wrapper'>
+                        <label className='input-label'>Addition image urls (one per line)</label>
+                        <textarea
+                            className='form-input'
+                            onChange={e => setUrls(e.target.value)}
+                            value={urls}
+                        />
+                    </div>
+                    <div className='input-wrapper'>
+                        <button type="submit" className='submit-button'>Post Spot</button>
+                    </div>
                 </div>
             </form>
         </div >

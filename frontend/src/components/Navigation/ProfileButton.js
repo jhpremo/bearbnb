@@ -4,11 +4,13 @@ import * as sessionActions from '../../store/session';
 import SignupFormModal from '../SignupFormModal';
 import LoginFormModal from '../LoginFormModal';
 import CreateSpotFormModal from "../CreateSpotModal";
+import { useHistory } from "react-router-dom";
 import './Navigation.css';
 
 function ProfileButton({ user }) {
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(false);
+    const history = useHistory()
 
     const openMenu = () => {
         if (showMenu) return;
@@ -30,13 +32,13 @@ function ProfileButton({ user }) {
     const logout = (e) => {
         e.preventDefault();
         dispatch(sessionActions.logoutThunk());
+        history.push('/')
     };
     let dropDown
     if (user) {
         dropDown = (
             <>
-                <div>{user.username}</div>
-                <div>{user.email}</div>
+                <div>Logged in as {user.username}</div>
                 <CreateSpotFormModal />
                 <button onClick={logout}>Log Out</button>
             </>

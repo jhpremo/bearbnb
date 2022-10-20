@@ -10,12 +10,17 @@
 
 .spot-card-wrapper {
     display: flex;
-    justify-content: left;
+    justify-content: space-between;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     flex-wrap: wrap;
     gap: 2%;
+}
+
+.spot-card-wrapper::after {
+    content: "";
+    flex: auto;
 }
 
 .spot-card {
@@ -30,8 +35,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .star {
     font-size: 10pt;
+}
+
+#spot-card-location {
+    font-size: 16px;
+    color: black;
+    font-weight: 500;
+}
+
+.spot-card-price {
+    font-size: 15px;
 }

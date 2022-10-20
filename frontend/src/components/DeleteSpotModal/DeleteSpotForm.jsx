@@ -14,7 +14,7 @@ function DeleteSpotForm({ setShowModal }) {
     useEffect(() => {
         if (spotName === name) setActive(false)
         else setActive(true)
-    }, [spotName])
+    }, [spotName, name])
 
 
     const handleSubmit = async (e) => {
@@ -25,13 +25,14 @@ function DeleteSpotForm({ setShowModal }) {
         history.push('/')
     };
 
+    const closeModal = () => setShowModal(false)
     return (
         <div className='form-wrapper'>
-            <form onSubmit={handleSubmit} className='form delete-form'>
+            <form onSubmit={handleSubmit} className='form small-form'>
                 <div className='top-bar'>
+                    <i class="fa-solid fa-x form-x" onClick={closeModal} />
                     <h4 id='form-header-1'>Delete Your Spot</h4>
                 </div>
-                <h3 id='form-header-2'></h3>
                 <div className='input-wrapper'>
                     <label className='input-label delete-label'>
                         Caution: deleting your spot will permenantly remove it from bearbnb and cancel all future bookings, enter the spot name below to confirm

@@ -8,10 +8,10 @@ function SpotCard({ spot }) {
         }}>
             <div className="spot-image" style={{ backgroundImage: `url(${spot.previewImage})` }}></div>
             <div className="location-rating">
-                <div>{`${spot.city}, ${spot.state}`}</div>
+                <div id="spot-card-location">{`${spot.city}, ${spot.state}`}</div>
                 <div><i className="fa-solid fa-star star" /> {spot.avgStarRating}</div>
             </div>
-            <div>${spot.price} night</div>
+            <div className="spot-card-price">${spot.price} night</div>
         </div >
     )
 }

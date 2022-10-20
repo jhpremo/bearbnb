@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 
-function SignupForm() {
+function SignupForm({ setShowModal }) {
     const dispatch = useDispatch();
     const sessionUser = useSelector((state) => state.session.user);
     const [email, setEmail] = useState("");
@@ -29,10 +29,12 @@ function SignupForm() {
         return setErrors(['Confirm Password field must be the same as the Password field']);
     };
 
+    const closeModal = () => setShowModal(false)
     return (
         <div className='form-wrapper'>
-            <form onSubmit={handleSubmit} className='form'>
+            <form onSubmit={handleSubmit} className='form small-form'>
                 <div className='top-bar'>
+                    <i class="fa-solid fa-x form-x" onClick={closeModal} />
                     <h4 id='form-header-1'>Sign up</h4>
                 </div>
                 <h3 id='form-header-2'>Welcome to BearBNB</h3>

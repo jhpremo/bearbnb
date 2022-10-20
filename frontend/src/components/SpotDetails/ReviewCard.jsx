@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deleteReviewThunk } from "../../store/reviewsReducer";
 import { subtractSpotReviewActionCreator } from "../../store/spotsReducer";
+import "./ReviewCard.css"
+
 function ReviewCard({ review }) {
     let postDate = new Date(review.createdAt)
     let year = postDate.getFullYear()
@@ -13,14 +15,17 @@ function ReviewCard({ review }) {
     }
     const user = useSelector((state) => state.session.user)
     let name
-    if (review.userId === user.id) name = "Your review"
+    if (review.userId === user?.id) name = "Your review"
     else name = review.User.firstName
     return (
         <div className="review-card">
-            <h2>{name}</h2>
+            <div className="stars-name-wrapper">
+                <h2>{name}</h2>
+                <div><i className="fa-solid fa-star star" /> {review.stars}</div>
+            </div>
             <h3>{month + " " + year}</h3>
             <p>{review.review}</p>
-            {review.userId === user.id && <button type='button' onClick={deleteClick}>Delete</button>}
+            {review.userId === user?.id && <button type='button' onClick={deleteClick}>Delete</button>}
         </div>
     )
 }

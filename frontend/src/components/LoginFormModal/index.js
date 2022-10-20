@@ -12,7 +12,7 @@ function LoginFormModal() {
                 <Modal onClose={() => {
                     setShowModal(false)
                 }}>
-                    <LoginForm />
+                    <LoginForm setShowModal={setShowModal} />
                 </Modal>
             )}
         </>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postSpotReviewThunk } from "../../store/reviewsReducer";
 import { addSpotReviewActionCreator } from "../../store/spotsReducer";
@@ -8,10 +8,24 @@ function CreateReviewForm({ setShowModal }) {
     const [stars, setStars] = useState(3);
     const [reviewText, setReviewText] = useState("");
     const [errors, setErrors] = useState([]);
+    const [submitted, setSubmitted] = useState(false)
+
+    useEffect(() => {
+        let errorsArr = []
+
+        if (reviewText && reviewText.length > 255) errorsArr.push("Review must be less than 255 characters")
+
+        setErrors(errorsArr)
+    }, [reviewText])
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (errors.length) {
+            setSubmitted(true)
+            return
+        }
 
         const reviewObj = {
             stars: parseInt(stars),
@@ -23,14 +37,17 @@ function CreateReviewForm({ setShowModal }) {
         setShowModal(false)
     };
 
+    const closeModal = () => setShowModal(false)
+
     return (
         <div className='form-wrapper'>
-            <form onSubmit={handleSubmit} className='form'>
+            <form onSubmit={handleSubmit} className='form small-form'>
                 <div className='top-bar'>
+                    <i class="fa-solid fa-x form-x" onClick={closeModal} />
                     <h4 id='form-header-1'>Review Spot</h4>
                 </div>
                 <h3 id='form-header-2'>What did you think of {spot.name}</h3>
-                {errors.length > 0 && <ul>
+                {errors.length > 0 && submitted && <ul>
                     {errors.map((error, idx) => <li key={idx}>{error}</li>)}
                 </ul>}
                 <div className='input-wrapper'>

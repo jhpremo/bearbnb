@@ -6,7 +6,7 @@ function EditSpotFormModal() {
     const [showModal, setShowModal] = useState(false);
     return (
         <>
-            <button onClick={() => setShowModal(true)}>Edit Spot</button>
+            <button onClick={() => setShowModal(true)}>Edit</button>
             {showModal && (
                 <Modal onClose={() => setShowModal(false)}>
                     <EditSpotForm setShowModal={setShowModal} />

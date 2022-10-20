@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import './LoginForm.css';
 
 
-function LoginForm() {
+function LoginForm({ setShowModal }) {
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user);
     const [credential, setCredential] = useState('');
@@ -26,13 +26,16 @@ function LoginForm() {
             });
     }
 
+    const closeModal = () => setShowModal(false)
+
     return (
-        <div className='form-wrapper'>
-            <form onSubmit={handleSubmit} className='form'>
+        <div className='form-wrapper log-in-form-wrapper'>
+            <form onSubmit={handleSubmit} className='form small-form'>
                 <div className='top-bar'>
+                    <i class="fa-solid fa-x form-x" onClick={closeModal} />
                     <h4 id='form-header-1'>Log in</h4>
                 </div>
-                <h3 id='form-header-2'>Welcome to BearBNB</h3>
+                <h3 id='form-header-2'>Welcome Back to BearBNB</h3>
                 {errors.length > 0 && <ul>
                     {errors.map((error, idx) => <li key={idx}>{error}</li>)}
                 </ul>}
