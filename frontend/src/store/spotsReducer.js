@@ -175,7 +175,8 @@ const spotsReducer = (state = initialState, action) => {
             total = state.singleSpot.avgStarRating * state.singleSpot.numReviews
             newTotal = total - action.stars
             newNumReviews = state.singleSpot.numReviews - 1
-            newAvgStarRating = newTotal / newNumReviews
+            if (newNumReviews === 0) newAvgStarRating = 0
+            else newAvgStarRating = newTotal / newNumReviews
             return { ...state, singleSpot: { ...state.singleSpot, Owner: { ...state.singleSpot.Owner }, SpotImages: [...state.singleSpot.SpotImages], numReviews: newNumReviews, avgStarRating: newAvgStarRating } }
         default:
             return state;

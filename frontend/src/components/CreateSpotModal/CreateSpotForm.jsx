@@ -32,7 +32,7 @@ function CreateSpotForm({ setShowModal }) {
         if (!(state && country && address && city && name && description && price)) errorsArr.push("All fields must be filled out")
         if (name && name.length > 50) errorsArr.push("Spot name must be less than 50 characters")
         if (description && description.length > 255) errorsArr.push("Spot description must be less than 255 characters")
-        if (price && !parsedPrice) errorsArr.push('Price must be a number')
+        if (price && (!parsedPrice || parsedPrice <= 0)) errorsArr.push('Price must be a positive number')
         if (!validateUrl([previewImageUrl])) errorsArr.push('Preview image must have a valid url')
         if (urls && !validateUrl(urlArr)) errorsArr.push('Each additional imags must have a valid url seperated by a new line')
 
