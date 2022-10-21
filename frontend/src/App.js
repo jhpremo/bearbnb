@@ -30,7 +30,12 @@ function App() {
           </Route>
         </Switch>
       )}
-    </div>
+      <div className="footer">
+        <div>Product of Jason Premo </div>
+        <a href="https://www.linkedin.com/in/jhpremo/">Linkedin</a>
+        <div> jh.premo@gmail.com </div>
+      </div>
+    </div >
   );
 }
 

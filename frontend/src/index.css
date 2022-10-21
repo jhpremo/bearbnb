@@ -138,3 +138,17 @@ table {
     max-width: 1200px;
     font-family: 'Roboto', "Helvetica";
 }
+
+.footer {
+    font-size: 10px;
+    border-top: 1px solid lightgray;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    color: gray;
+    padding: 5px;
+}
+
+.footer>a {
+    color: gray;
+}
