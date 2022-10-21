@@ -7,13 +7,13 @@ Live site: [BearBnB](https://bear--bnb.herokuapp.com/)
 
 ## Wiki Link
 
-[API Docs](./wiki-files/API-docs.md)
+[API Docs](https://github.com/jhpremo/bear--bnb/wiki/API-Documentation)
 
-[Database Schema](./wiki-files/database-schema.md)
+[Database Schema](https://github.com/jhpremo/bear--bnb/wiki/Database-Schema)
 
-[Feature List](./wiki-files/feature-list.mdhttps://bear--bnb.herokuapp.com/)
+[Feature List](https://github.com/jhpremo/bear--bnb/wiki/Feature-list)
 
-[Redux Store Shape](./wiki-files/redux-store-shape.md)
+[Redux Store Shape](https://github.com/jhpremo/bear--bnb/wiki/Redux-Store-Shape)
 
 
 ## Tech Stack
