@@ -12,11 +12,6 @@ function SpotsPage() {
 
     const spotsArr = useSelector((state) => Object.values(state.spots.allSpots))
 
-    useEffect(() => {
-
-    }, [spotsArr.length])
-
-
 
     if (!spotsArr) return <></>
     return (
