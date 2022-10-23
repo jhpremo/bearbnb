@@ -20,10 +20,12 @@ function SpotsPage() {
 
     if (!spotsArr) return <></>
     return (
-        <div className='spot-card-wrapper'>
-            {spotsArr.map((spot) => {
-                return <SpotCard key={spot.id} spot={spot} />
-            })}
+        <div className='spot-card-container'>
+            <div className='spot-card-wrapper'>
+                {spotsArr.map((spot) => {
+                    return <SpotCard key={spot.id} spot={spot} />
+                })}
+            </div>
         </div>
     )
 }

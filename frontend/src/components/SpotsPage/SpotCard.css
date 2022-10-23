@@ -10,25 +10,34 @@
 
 .spot-card-wrapper {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     flex-wrap: wrap;
-    gap: 2%;
 }
 
-.spot-card-wrapper::after {
-    content: "";
-    flex: auto;
+.spot-card-container {
+    width: 100%;
+    justify-content: center;
+}
+
+.spot-card:nth-child(4n) {
+    margin-right: 0;
+}
+
+.spot-card:nth-child(4n-3) {
+    margin-left: 0;
 }
 
 .spot-card {
     max-width: 300px;
     min-width: 200px;
     width: 23%;
+    margin: 0 1.33%;
     aspect-ratio: 4/5;
     cursor: pointer;
+    box-sizing: border-box;
 }
 
 .location-rating {

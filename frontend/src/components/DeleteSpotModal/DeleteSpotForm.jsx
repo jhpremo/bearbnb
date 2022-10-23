@@ -20,7 +20,7 @@ function DeleteSpotForm({ setShowModal }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        dispatch(deleteSpotThunk(spotId))
+        await dispatch(deleteSpotThunk(spotId))
         setShowModal(false)
         history.push('/')
     };
