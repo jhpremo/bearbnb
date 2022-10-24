@@ -26,7 +26,7 @@ function EditSpotForm({ setShowModal }) {
         if (!(state && country && address && city && name && description && price)) errorsArr.push("All fields must be filled out")
         if (name && name.length > 50) errorsArr.push("Spot name must be less than 50 characters")
         if (description && description.length > 255) errorsArr.push("Spot description must be less than 255 characters")
-        if (price && (!parsedPrice || parsedPrice <= 0)) errorsArr.push('Price must be a positive number')
+        if (price && (!parsedPrice || !Number(price) || parsedPrice <= 0)) errorsArr.push('Price must be a positive number')
 
         setErrors(errorsArr)
     }, [state, country, address, city, name, description, price])
