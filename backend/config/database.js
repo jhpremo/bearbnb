@@ -9,11 +9,8 @@ module.exports = {
     typeValidation: true
   },
   production: {
-    production: {
-      // ...
-      define: {
-        schema: process.env.SCHEMA
-      }
+    define: {
+      schema: process.env.SCHEMA
     },
     use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
