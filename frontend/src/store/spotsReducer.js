@@ -16,8 +16,19 @@ export const loadSpotsActionCreator = (spotsArr) => {
     }
 }
 
-export const fetchSpotsThunk = () => async (dispatch) => {
-    const res = await csrfFetch('api/spots')
+export const fetchSpotsThunk = (queryParams) => async (dispatch) => {
+    let query = []
+    let queryString = ''
+
+    for (let [key, val] of Object.entries(queryParams)) {
+        query.push(`${key}=${val}`)
+    }
+
+    if (query.length > 0) {
+        queryString += '?' + query.join('&')
+    }
+
+    const res = await csrfFetch(`api/spots${queryString}`)
 
     if (res.ok) {
         const data = await res.json()

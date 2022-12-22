@@ -43,7 +43,7 @@ let getSpotsStarsAndPreview = (spots, reviews, previewImages) => {
 router.get('/', async (req, res) => {
 
 
-    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice, q } = req.query
     pageParsed = parseInt(page)
     sizeParsed = parseInt(size)
     minLatParsed = parseFloat(minLat)
@@ -52,9 +52,8 @@ router.get('/', async (req, res) => {
     maxLngParsed = parseFloat(maxLng)
     minPriceParsed = parseFloat(minPrice)
     maxPriceParsed = parseFloat(maxPrice)
-
     let errors = {}
-
+    console.log("--------------------------", q)
     if (page && (Number.isNaN(pageParsed) || pageParsed < 1)) errors.page = "Page must be greater than or equal to 1"
     if (size && (Number.isNaN(sizeParsed) || sizeParsed < 1)) errors.size = "Size must be greater than or equal to 1"
     if (maxLat && (Number.isNaN(maxLatParsed) || maxLatParsed < -90 || maxLatParsed > 90)) errors.maxLat = "Maximum latitude is invalid"
@@ -99,6 +98,9 @@ router.get('/', async (req, res) => {
     else if (maxPrice) where.price = { [Op.lte]: maxPriceParsed }
     else if (minPrice) where.price = { [Op.gte]: minPriceParsed }
 
+    if (q) {
+        where[Op.or] = [{ name: { [Op.like]: `%${q}%` } }, { city: { [Op.like]: `%${q}%` } }, { state: { [Op.like]: `%${q}%` } }, { country: { [Op.like]: `%${q}%` } }, { description: { [Op.like]: `%${q}%` } }]
+    }
     let reviews = await Review.findAll({
         raw: true,
         attributes: ['spotId', 'stars']

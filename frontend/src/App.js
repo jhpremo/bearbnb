@@ -20,7 +20,12 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route path='/' exact>
-            <SpotsPage />
+            <SpotsPage isSearch={false} />
+          </Route>
+          <Route
+            path='/search'
+            exact={true}>
+            <SpotsPage isSearch={true} />
           </Route>
           <Route path='/spots/:spotId'>
             <SpotDetails />

@@ -47,6 +47,9 @@ function ProfileButton({ user }) {
             <>
                 <div>Logged in as {user.username}</div>
                 <CreateSpotFormModal />
+                <button>My Spots</button>
+                <button>My Reviews</button>
+                <button>My Bookings</button>
                 <button onClick={logout}>Log Out</button>
             </>
         )
@@ -70,7 +73,7 @@ function ProfileButton({ user }) {
             <button id="profile-button" onClick={openMenu}>
                 <i className="fa-solid fa-bars" />
                 <span> </span>
-                <i className="fas fa-user-circle" />
+                {user && <i className="fas fa-user-circle" />}
             </button>
             <div className={dropDownClass}>
                 {dropDown}
