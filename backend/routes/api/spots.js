@@ -103,11 +103,11 @@ router.get('/', async (req, res) => {
         console.log(terms)
         let search = []
         for (let term of terms) {
-            search.push({ name: { [Op.like]: `%${term}%` } })
-            search.push({ city: { [Op.like]: `%${term}%` } })
-            search.push({ state: { [Op.like]: `%${term}%` } })
-            search.push({ country: { [Op.like]: `%${term}%` } })
-            search.push({ description: { [Op.like]: `%${term}%` } })
+            search.push({ name: { [Op.iLike]: `%${term}%` } })
+            search.push({ city: { [Op.iLike]: `%${term}%` } })
+            search.push({ state: { [Op.iLike]: `%${term}%` } })
+            search.push({ country: { [Op.iLike]: `%${term}%` } })
+            search.push({ description: { [Op.iLike]: `%${term}%` } })
         }
         where[Op.or] = search
     }
