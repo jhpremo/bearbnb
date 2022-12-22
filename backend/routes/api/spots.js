@@ -99,7 +99,17 @@ router.get('/', async (req, res) => {
     else if (minPrice) where.price = { [Op.gte]: minPriceParsed }
 
     if (q) {
-        where[Op.or] = [{ name: { [Op.like]: `%${q}%` } }, { city: { [Op.like]: `%${q}%` } }, { state: { [Op.like]: `%${q}%` } }, { country: { [Op.like]: `%${q}%` } }, { description: { [Op.like]: `%${q}%` } }]
+        let terms = q.split(' ')
+        console.log(terms)
+        let search = []
+        for (let term of terms) {
+            search.push({ name: { [Op.like]: `%${term}%` } })
+            search.push({ city: { [Op.like]: `%${term}%` } })
+            search.push({ state: { [Op.like]: `%${term}%` } })
+            search.push({ country: { [Op.like]: `%${term}%` } })
+            search.push({ description: { [Op.like]: `%${term}%` } })
+        }
+        where[Op.or] = search
     }
     let reviews = await Review.findAll({
         raw: true,

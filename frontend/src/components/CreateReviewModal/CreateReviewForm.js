@@ -71,6 +71,7 @@ function CreateReviewForm({ setShowModal }) {
                         className='form-input'
                         onChange={e => setReviewText(e.target.value)}
                         value={reviewText}
+                        maxLength={255}
                     />
                 </div>
                 <div className='input-wrapper'>

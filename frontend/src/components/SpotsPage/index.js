@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { fetchSessionSpotsThunk, fetchSpotsThunk } from '../../store/spotsReducer';
 import SpotCard from './SpotCard';
 
@@ -9,8 +9,9 @@ function SpotsPage({ isSearch, isSession }) {
     const [query, setQuery] = useState({})
     const dispatch = useDispatch()
     const location = useLocation();
-
+    const sessionUser = useSelector(state => state.session.user);
     const spotsArr = useSelector((state) => Object.values(state.spots.allSpots))
+    const history = useHistory()
 
     useEffect(() => {
         setIsLoaded(false)
@@ -40,6 +41,7 @@ function SpotsPage({ isSearch, isSession }) {
 
             dispatch(fetchSpotsThunk(query)).then(() => setIsLoaded(true))
         } else {
+            if (!sessionUser) history.push('/')
             dispatch(fetchSessionSpotsThunk()).then(() => setIsLoaded(true))
         }
     }, [location, dispatch, isSearch, isSession])
