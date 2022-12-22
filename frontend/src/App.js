@@ -20,12 +20,15 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route path='/' exact>
-            <SpotsPage isSearch={false} />
+            <SpotsPage isSearch={false} isSession={false} />
           </Route>
           <Route
             path='/search'
             exact={true}>
-            <SpotsPage isSearch={true} />
+            <SpotsPage isSearch={true} isSession={false} />
+          </Route>
+          <Route path='/my-spots' exact>
+            <SpotsPage isSearch={false} isSession={true} />
           </Route>
           <Route path='/spots/:spotId'>
             <SpotDetails />
@@ -35,11 +38,10 @@ function App() {
           </Route>
         </Switch>
       )}
-      <div className="footer">
-        <div>Product of Jason Premo </div>
-        <a href="https://www.linkedin.com/in/jhpremo/">Linkedin</a>
-        <div> jh.premo@gmail.com </div>
-      </div>
+      <h6 className="about-links-footer">
+        <div className="about-links-github-icon"> <a target="_blank" href="https://github.com/jhpremo/bearbnb"><i className="fa-brands fa-github" /></a> <a target="_blank" href="https://www.linkedin.com/in/jhpremo/"><i className="fa-brands fa-linkedin" /></a></div>
+        <div className="about-links-creators">Website clone created by Jason Premo</div>
+      </h6>
     </div >
   );
 }

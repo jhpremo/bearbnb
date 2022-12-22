@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { fetchSpotsThunk } from '../../store/spotsReducer';
+import { fetchSessionSpotsThunk, fetchSpotsThunk } from '../../store/spotsReducer';
 import SpotCard from './SpotCard';
 
-function SpotsPage({ isSearch }) {
+function SpotsPage({ isSearch, isSession }) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [query, setQuery] = useState({})
     const dispatch = useDispatch()
@@ -21,35 +21,40 @@ function SpotsPage({ isSearch }) {
             "maxPrice"
         ]);
 
-        if (isSearch) {
-            const params = new URLSearchParams(location.search)
+        if (!isSession) {
+            if (isSearch) {
+                const params = new URLSearchParams(location.search)
 
-            for (let [key, val] of params) {
-                if (acceptedParams.has(key)) {
-                    if (key !== 'q') {
-                        query[key] = Number(val)
+                for (let [key, val] of params) {
+                    if (acceptedParams.has(key)) {
+                        if (key !== 'q') {
+                            query[key] = Number(val)
 
-                    } else {
-                        query[key] = val
+                        } else {
+                            query[key] = val
+                        }
                     }
                 }
+                setQuery(query)
             }
-            setQuery(query)
+
+            dispatch(fetchSpotsThunk(query)).then(() => setIsLoaded(true))
+        } else {
+            dispatch(fetchSessionSpotsThunk()).then(() => setIsLoaded(true))
         }
+    }, [location, dispatch, isSearch, isSession])
 
-        dispatch(fetchSpotsThunk(query)).then(() => setIsLoaded(true))
-
-    }, [location, dispatch, isSearch])
-
-    if (!spotsArr) return <></>
     return (
-        <div className='spot-card-container'>
+        <>{isLoaded && <div className='spot-card-container'>
             <div className='spot-card-wrapper'>
                 {spotsArr.map((spot) => {
                     return <SpotCard key={spot.id} spot={spot} />
                 })}
+
             </div>
-        </div>
+            {spotsArr.length < 1 && <div className='no-results'>No results found</div>}
+        </div>}
+        </>
     )
 }
 

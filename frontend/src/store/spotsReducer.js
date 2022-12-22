@@ -38,6 +38,20 @@ export const fetchSpotsThunk = (queryParams) => async (dispatch) => {
     return res
 }
 
+export const fetchSessionSpotsThunk = () => async (dispatch) => {
+
+
+
+    const res = await csrfFetch(`api/spots/current`)
+
+    if (res.ok) {
+        const data = await res.json()
+        dispatch(loadSpotsActionCreator(data.Spots))
+        return data
+    }
+    return res
+}
+
 export const loadOneSpotActionCreator = (spotObj) => {
     return {
         type: LOAD_ONE_SPOT,

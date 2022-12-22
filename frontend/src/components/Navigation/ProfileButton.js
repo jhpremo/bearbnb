@@ -47,7 +47,7 @@ function ProfileButton({ user }) {
             <>
                 <div>Logged in as {user.username}</div>
                 <CreateSpotFormModal />
-                <button>My Spots</button>
+                <button onClick={() => history.push("my-spots")}>My Spots</button>
                 <button>My Reviews</button>
                 <button>My Bookings</button>
                 <button onClick={logout}>Log Out</button>
