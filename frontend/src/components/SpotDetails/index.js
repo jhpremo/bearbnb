@@ -1,17 +1,31 @@
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOneSpotThunk } from "../../store/spotsReducer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import EditSpotFormModal from "../EditSpotModal";
 import "./SpotDetails.css"
 import DeleteSpotFormModal from "../DeleteSpotModal";
 import { fetchSpotReviewsThunk } from "../../store/reviewsReducer";
 import ReviewCard from "./ReviewCard";
 import CreateReviewFormModal from "../CreateReviewModal";
+import 'react-date-range/dist/styles.css'
+import 'react-date-range/dist/theme/default.css';
+import { DateRange } from 'react-date-range'
 
 function SpotDetails() {
     const dispatch = useDispatch()
     const { spotId } = useParams()
+    const [isOpen, setIsOpen] = useState(false)
+    const [dateState, setDateState] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection'
+        }
+    ]);
+
+    console.log(dateState)
+
     useEffect(() => {
         dispatch(fetchOneSpotThunk(spotId))
         dispatch(fetchSpotReviewsThunk(spotId))
@@ -21,6 +35,18 @@ function SpotDetails() {
     const user = useSelector((state) => state.session.user)
     const reviewsArr = useSelector((state) => Object.values(state.reviews.spot))
 
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const closeMenu = () => {
+            setIsOpen(false);
+        };
+
+        document.addEventListener('click', closeMenu);
+
+        return () => document.removeEventListener("click", closeMenu);
+    }, [isOpen]);
 
     if (spotObj && !spotObj.name) {
         return <></>
@@ -48,7 +74,6 @@ function SpotDetails() {
             break
         }
     }
-
 
     return (
         <div className="spot-details-wrapper">
@@ -92,6 +117,42 @@ function SpotDetails() {
                             <h2>{spotObj.numReviews} reviews</h2>
                         </div>
                     </div>
+                    <div className="dates-area" onClick={() => setIsOpen(true)}>
+                        <div className="check-in">
+                            <div className="check">CHECK-IN</div>
+                            <div className="check-date">Add date</div>
+                        </div>
+                        <div className="check-out">
+                            <div className="check">CHECK-OUT</div>
+                            <div className="check-date">Add date</div>
+                        </div>
+                        {isOpen && <div onClick={(e) => e.stopPropagation()} className="booking-drop-down-wrapper">
+                            <div className="drop-down-dates-area">
+                                <div className="check-in">
+                                    <div className="check">CHECK-IN</div>
+                                    <div className="check-date">{dateState[0].startDate.toDateString()}</div>
+                                </div>
+                                <div className="check-out">
+                                    <div className="check">CHECK-OUT</div>
+                                    <div className="check-date">{dateState[0].endDate.toDateString()}</div>
+                                </div>
+                                <div></div>
+                            </div>
+                            <DateRange
+                                rangeColors={["#FF5A60"]}
+                                editableDateInputs={true}
+                                onChange={item => setDateState([item.selection])}
+                                moveRangeOnFirstSelection={false}
+                                ranges={dateState}
+                                months={2}
+                                direction="horizontal"
+                                showDateDisplay={false}
+                                minDate={new Date()}
+                            />
+
+                        </div>}
+                    </div>
+                    <button className="reserve-button">Reserve</button>
                     <div className="price-calculations">
                         <div>
                             <p>${spotObj.price} X 7 nights</p>
