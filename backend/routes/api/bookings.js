@@ -15,7 +15,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
         },
         include: {
             model: Spot,
-            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']
+            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'name', 'price']
         },
         raw: true,
         nest: true

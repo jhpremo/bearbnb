@@ -43,3 +43,13 @@
 .review-card>button:hover {
     box-shadow: 0px 1px 2px gray;
 }
+
+.reserved-on-div {
+    margin-top: auto;
+    font-size: 14px;
+}
+
+.reserved-from-div {
+    font-size: 16px;
+    font-weight: 500;
+}

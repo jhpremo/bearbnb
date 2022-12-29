@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOneSpotThunk } from "../../store/spotsReducer";
 import { useEffect, useState } from "react";
@@ -11,11 +11,24 @@ import CreateReviewFormModal from "../CreateReviewModal";
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css';
 import { DateRange } from 'react-date-range'
+import { loadSpotBookingsThunk } from "../../store/bookings";
+import isWithinInterval from 'date-fns/isWithinInterval'
+import areIntervalsOverlapping from 'date-fns/areIntervalsOverlapping'
+import { csrfFetch } from "../../store/csrf";
 
 function SpotDetails() {
     const dispatch = useDispatch()
+    const history = useHistory()
     const { spotId } = useParams()
     const [isOpen, setIsOpen] = useState(false)
+    const [start, setStart] = useState("Add date")
+    const [end, setEnd] = useState("Add date")
+    const [numNights, setNumNights] = useState(false)
+    const [isChanged, setIsChanged] = useState(false)
+    let tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+
+
     const [dateState, setDateState] = useState([
         {
             startDate: new Date(),
@@ -24,16 +37,17 @@ function SpotDetails() {
         }
     ]);
 
-    console.log(dateState)
 
     useEffect(() => {
         dispatch(fetchOneSpotThunk(spotId))
         dispatch(fetchSpotReviewsThunk(spotId))
+        dispatch(loadSpotBookingsThunk(spotId))
     }, [dispatch, spotId])
 
     const spotObj = useSelector((state) => state.spots.singleSpot)
     const user = useSelector((state) => state.session.user)
     const reviewsArr = useSelector((state) => Object.values(state.reviews.spot))
+    const bookingsArr = useSelector((state) => Object.values(state.bookings.spotBookings))
 
 
     useEffect(() => {
@@ -73,6 +87,52 @@ function SpotDetails() {
             hasReview = true
             break
         }
+    }
+
+    const changeDateRange = (item) => {
+        let check = true
+        console.log(item)
+        for (let booking of bookingsArr) {
+            if (areIntervalsOverlapping({ start: new Date(booking.startDate), end: new Date(booking.endDate) }, { start: item.selection.startDate, end: item.selection.endDate })) {
+                check = false
+                break
+            }
+        }
+        if (check) {
+            setDateState([item.selection])
+            setIsChanged(true)
+        }
+    }
+
+    const disabledDates = (date) => {
+        let check = false
+        for (let booking of bookingsArr) {
+            if (isWithinInterval(date, { start: new Date(booking.startDate), end: new Date(booking.endDate) })) {
+                check = true
+                break
+            }
+        }
+        return check
+    }
+
+    const handleReserve = async () => {
+        if (start === "Add date" || end === "Add date") {
+            setIsOpen(true)
+            return
+        }
+        let startPost = new Date(start)
+        let endPost = new Date(end)
+        let payload = {
+            startDate: startPost.toString(),
+            endDate: endPost.toString()
+        }
+        console.log(payload)
+        let res = await csrfFetch(`/api/spots/${spotId}/bookings`, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        })
+
+        if (res.ok) history.push("/my-reservations")
     }
 
     return (
@@ -120,43 +180,69 @@ function SpotDetails() {
                     <div className="dates-area" onClick={() => setIsOpen(true)}>
                         <div className="check-in">
                             <div className="check">CHECK-IN</div>
-                            <div className="check-date">Add date</div>
+                            <div className="check-date">{start}</div>
                         </div>
                         <div className="check-out">
                             <div className="check">CHECK-OUT</div>
-                            <div className="check-date">Add date</div>
+                            <div className="check-date">{end}</div>
                         </div>
                         {isOpen && <div onClick={(e) => e.stopPropagation()} className="booking-drop-down-wrapper">
                             <div className="drop-down-dates-area">
-                                <div className="check-in">
+                                <div className="check-in inner-in">
                                     <div className="check">CHECK-IN</div>
                                     <div className="check-date">{dateState[0].startDate.toDateString()}</div>
                                 </div>
-                                <div className="check-out">
+                                <div className="check-out inner-out">
                                     <div className="check">CHECK-OUT</div>
                                     <div className="check-date">{dateState[0].endDate.toDateString()}</div>
                                 </div>
-                                <div></div>
+                                <div className="calandar-buttons">
+                                    <div className="calandar-button" onClick={() => {
+                                        if (isChanged && dateState[0].startDate.toDateString() !== dateState[0].endDate.toDateString()) {
+                                            setStart(dateState[0].startDate.toDateString())
+                                            setEnd(dateState[0].endDate.toDateString())
+                                            setNumNights(Math.ceil((Math.abs(dateState[0].endDate.getTime() - dateState[0].startDate.getTime())) / (1000 * 3600 * 24)))
+                                            setIsOpen(false)
+                                        }
+                                    }}><i className="fa-solid fa-check" /></div>
+                                    <div className="calandar-button" onClick={() => {
+                                        setDateState([
+                                            {
+                                                startDate: new Date(),
+                                                endDate: new Date(),
+                                                key: 'selection'
+                                            }
+                                        ])
+                                        setNumNights(false)
+                                        setStart("Add date")
+                                        setEnd("Add date")
+                                        setIsChanged(false)
+                                        setIsOpen(false)
+                                    }}><i className="fa-solid fa-x" /></div>
+                                </div>
                             </div>
                             <DateRange
                                 rangeColors={["#FF5A60"]}
+                                preventSnapRefocus={true}
                                 editableDateInputs={true}
-                                onChange={item => setDateState([item.selection])}
+                                onChange={changeDateRange}
                                 moveRangeOnFirstSelection={false}
                                 ranges={dateState}
+                                disabledDay={disabledDates}
                                 months={2}
                                 direction="horizontal"
                                 showDateDisplay={false}
-                                minDate={new Date()}
+                                minDate={tomorrow}
                             />
 
                         </div>}
                     </div>
-                    <button className="reserve-button">Reserve</button>
-                    <div className="price-calculations">
+                    {user && <button className="reserve-button" onClick={handleReserve}>Reserve</button>}
+                    {!user && <button className="reserve-button" id="disabled-reserve-button" onClick={handleReserve}>Log in to Reserve</button>}
+                    {numNights && <div className="price-calculations">
                         <div>
-                            <p>${spotObj.price} X 7 nights</p>
-                            <p>${(spotObj.price * 7).toFixed(2)}</p>
+                            <p>${spotObj.price} X {numNights} nights</p>
+                            <p>${(spotObj.price * numNights).toFixed(2)}</p>
                         </div>
                         <div>
                             <p>Cleaning fee</p>
@@ -168,9 +254,9 @@ function SpotDetails() {
                         </div>
                         <div className="price-card-total">
                             <p>Total before Taxes</p>
-                            <p>${(spotObj.price * .5 + spotObj.price * .6 + spotObj.price * 7).toFixed(2)}</p>
+                            <p>${(spotObj.price * .5 + spotObj.price * .6 + spotObj.price * numNights).toFixed(2)}</p>
                         </div>
-                    </div>
+                    </div>}
                 </div>
             </div>
             <div className="reviews-preview-wrapper">

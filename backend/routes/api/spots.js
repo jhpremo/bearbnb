@@ -444,7 +444,7 @@ router.post('/:spotId/reviews', restoreUser, requireAuth, async (req, res) => {
     return res.json(newReview)
 })
 
-router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
+router.get('/:spotId/bookings', restoreUser, async (req, res) => {
     const spotId = req.params.spotId
 
     let spot = await Spot.findByPk(spotId)
@@ -456,7 +456,7 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
 
     let bookings
 
-    if (spot.ownerId === req.user.id) {
+    if (spot.ownerId === req.user?.id) {
         bookings = await Booking.findAll({
             where: {
                 spotId
@@ -473,7 +473,7 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
             where: {
                 spotId
             },
-            attributes: ['spotId', 'startDate', 'endDate'],
+            attributes: ["id", 'spotId', 'startDate', 'endDate'],
             raw: true,
             nest: true
         })
@@ -505,7 +505,7 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, async (req, res, next
 
     if (start <= now) errors.booking = "Booking cannot be set before or on current date"
     if (start >= end) {
-        errors.endDate = "endDate cannot be on or before startDate"
+        errors.endDate = "endDate cannot be before startDate"
     }
 
     let bookings = await Booking.findAll({

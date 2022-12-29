@@ -7,6 +7,7 @@ import './index.css'
 import SpotsPage from "./components/SpotsPage";
 import SpotDetails from "./components/SpotDetails";
 import MyReviews from "./components/myReviews";
+import MyReservations from "./components/myReservations";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,9 @@ function App() {
           </Route>
           <Route path='/my-reviews' exact>
             <MyReviews />
+          </Route>
+          <Route path='/my-reservations' exact>
+            <MyReservations />
           </Route>
           <Route path='/spots/:spotId'>
             <SpotDetails />

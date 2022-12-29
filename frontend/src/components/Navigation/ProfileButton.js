@@ -37,7 +37,7 @@ function ProfileButton({ user }) {
 
 
     const demoLogin = () => {
-        dispatch(sessionActions.loginUserThunk({ credential: 'FakeUser1', password: 'password2' }))
+        dispatch(sessionActions.loginUserThunk({ credential: 'demo-user', password: 'password2' }))
     }
 
 
@@ -49,7 +49,7 @@ function ProfileButton({ user }) {
                 <CreateSpotFormModal />
                 <button onClick={() => history.push("/my-spots")}>My Spots</button>
                 <button onClick={() => history.push("/my-reviews")}>My Reviews</button>
-                <button>My Bookings</button>
+                <button onClick={() => history.push("/my-reservations")}>My Reservations</button>
                 <button onClick={logout}>Log Out</button>
             </>
         )
