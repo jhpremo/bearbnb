@@ -42,8 +42,8 @@ Shows details page shows reviews and booking options
 ![spot-details]
 
 
-[home-page]: ./wiki-files/spots-page.PNG
-[spot-details]: ./wiki-files/spot-details.png
+[home-page]: ./wiki-files/spots-page.png
+[spot-details]: ./wiki-files/spot-details.PNG
 [reviews]: ./wiki-files/spot-details-review.png
 
 ## Get Started
