@@ -43,7 +43,7 @@ Shows details page shows reviews and booking options
 
 
 [home-page]: ./wiki-files/spots-page.png
-[spot-details]: ./wiki-files/spot-details-owner.png
+[spot-details]: ./wiki-files/spot-details.png
 [reviews]: ./wiki-files/spot-details-review.png
 
 ## Get Started
