@@ -42,7 +42,7 @@ Shows details page shows reviews and booking options
 ![spot-details]
 
 
-[home-page]: ./wiki-files/spots-page.png
+[home-page]: ./wiki-files/spots-page.PNG
 [spot-details]: ./wiki-files/spot-details.png
 [reviews]: ./wiki-files/spot-details-review.png
 
