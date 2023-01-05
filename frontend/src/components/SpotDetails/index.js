@@ -237,8 +237,9 @@ function SpotDetails() {
 
                         </div>}
                     </div>
-                    {user && <button className="reserve-button" onClick={handleReserve}>Reserve</button>}
+                    {user && spotObj.ownerId !== user?.id && <button className="reserve-button" onClick={handleReserve}>Reserve</button>}
                     {!user && <button className="reserve-button" id="disabled-reserve-button" disabled={true}>Log in to Reserve</button>}
+                    {spotObj.ownerId === user?.id && <button className="reserve-button" id="disabled-reserve-button" disabled={true}>Cannot Reserve your Spot</button>}
                     {numNights && <div className="price-calculations">
                         <div>
                             <p>${spotObj.price} X {numNights} nights</p>

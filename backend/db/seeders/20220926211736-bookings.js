@@ -339,7 +339,7 @@ module.exports = {
       },
       {
         spotId: 3,
-        userId: 4,
+        userId: 2,
         startDate: "2023-04-18",
         endDate: "2023-04-24"
       },
@@ -582,7 +582,7 @@ module.exports = {
         startDate: "2023-12-18",
         endDate: "2023-12-24"
       }, {
-        spotId: 1,
+        spotId: 5,
         userId: 4,
         startDate: "2023-01-01",
         endDate: "2023-01-09"
@@ -852,7 +852,7 @@ module.exports = {
       },
       {
         spotId: 6,
-        userId: 4,
+        userId: 2,
         startDate: "2023-11-18",
         endDate: "2023-11-24"
       },
@@ -929,7 +929,7 @@ module.exports = {
       },
       {
         spotId: 7,
-        userId: 4,
+        userId: 2,
         startDate: "2023-06-01",
         endDate: "2023-06-09"
       },
